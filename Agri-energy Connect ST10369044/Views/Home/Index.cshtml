@@ -2,7 +2,48 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="d-flex flex-column vh-100">
+    <!-- top green bar -->
+    <nav class="navbar" style="height: 60px; background-color: #46CD34;">
+        <div class="container-fluid">
+            <!-- you can put a logo or title here if you like -->
+        </div>
+    </nav>
+
+    <!-- main grey area with centered card -->
+    <div class="flex-fill d-flex align-items-center justify-content-center bg-light">
+        <div class="card p-4 shadow" style="min-width: 320px; max-width: 400px;">
+            @* Login form *@
+            <form asp-action="Login" method="post" novalidate>
+                <div class="mb-3">
+                    <input asp-for="Email"
+                           class="form-control"
+                           placeholder="Email"
+                           style="border-left: 4px solid #46CD34;" />
+                    <span asp-validation-for="Email" class="text-danger small"></span>
+                </div>
+
+                <div class="mb-3">
+                    <input asp-for="Password"
+                           type="password"
+                           class="form-control"
+                           placeholder="Password"
+                           style="border-left: 4px solid #46CD34;" />
+                    <span asp-validation-for="Password" class="text-danger small"></span>
+                </div>
+
+                <button type="submit"
+                        class="btn w-100"
+                        style="background-color: #CC9228; color: #fff;">
+                    Log In
+                </button>
+            </form>
+        </div>
+    </div>
 </div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
