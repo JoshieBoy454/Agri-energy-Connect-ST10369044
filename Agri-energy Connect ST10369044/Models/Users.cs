@@ -1,4 +1,6 @@
-﻿namespace Agri_energy_Connect_ST10369044.Models
+﻿using Microsoft.AspNetCore.Identity;
+
+namespace Agri_energy_Connect_ST10369044.Models
 {
     public class Users : IdentityUser
     {
