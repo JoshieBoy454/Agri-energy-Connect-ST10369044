@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>  @* CHANGED: Fixed missing exclamation mark *@
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
@@ -37,7 +37,9 @@
 
       <div class="collapse navbar-collapse" id="mainNav">
         <ul class="navbar-nav me-auto mb-2 mb-sm-0">
-
+            @* --------------------------------------------------------------> *@
+			@* this is a reactive navbar it chnages based on who is logged in *@
+			@* --------------------------------------------------------------> *@
                     @if (!isAuth)
                     {
                 <li class="nav-item">

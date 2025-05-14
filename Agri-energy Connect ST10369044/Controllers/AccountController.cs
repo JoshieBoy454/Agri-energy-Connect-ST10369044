@@ -13,18 +13,19 @@ namespace Agri_energy_Connect_ST10369044.Controllers
     //Made with the help of chatGPT
     //Made with the help of tutorialsEU
     //---------------------------------------------------------------->
-    [Authorize]
     public class AccountController : Controller
     {
         private readonly AppDbContext _db;
         public AccountController(AppDbContext db) => _db = db;
 
-        [Authorize(Roles = "Employee")]
+        [AllowAnonymous]
         [HttpGet] 
         public IActionResult Register() => View();
 
-        [Authorize(Roles = "Employee")]
+        [AllowAnonymous]
         [HttpPost]
+        [ValidateAntiForgeryToken]
+        //=========================================================================>
         public async Task<IActionResult> Register(RegisterViewModel rvm)
         {
             if (!ModelState.IsValid) return View(rvm);
@@ -69,6 +70,7 @@ namespace Agri_energy_Connect_ST10369044.Controllers
             await SignInUser(user);
             return RedirectToAction("Home", "Home");
         }
+        //=========================================================================>
 
         //--------------------------------------------------->
         // Add Farmer
@@ -79,19 +81,21 @@ namespace Agri_energy_Connect_ST10369044.Controllers
 
         [Authorize(Roles = "Employee")]
         [HttpPost]
-        public async Task<IActionResult> AddFarmer(AddFarmerViewModel vm)
+        [ValidateAntiForgeryToken]
+        //=========================================================================>
+        public async Task<IActionResult> AddFarmer(AddFarmerViewModel afvm)
         {
-            if (!ModelState.IsValid) return View(vm);
+            if (!ModelState.IsValid) return View(afvm);
 
-            if (_db.Users.Any(u => u.Email == vm.Email))
+            if (_db.Users.Any(u => u.Email == afvm.Email))
             {
                 ModelState.AddModelError("", "Email already taken.");
-                return View(vm);
+                return View(afvm);
             }
 
             var salt = Guid.NewGuid().ToString();
             var hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
-                password: vm.Password,
+                password: afvm.Password,
                 salt: System.Text.Encoding.UTF8.GetBytes(salt),
                 prf: KeyDerivationPrf.HMACSHA256,
                 iterationCount: 10000,
@@ -99,10 +103,10 @@ namespace Agri_energy_Connect_ST10369044.Controllers
 
             var farmer = new Users
             {
-                Email = vm.Email,
+                Email = afvm.Email,
                 Password = $"{salt}:{hashed}",
-                Name = vm.Name,
-                Surname = vm.Surname,
+                Name = afvm.Name,
+                Surname = afvm.Surname,
                 Role = "Farmer"
             };
             _db.Users.Add(farmer);
@@ -112,7 +116,9 @@ namespace Agri_energy_Connect_ST10369044.Controllers
             //-------------------------------------------------->
             return RedirectToAction("AddFarmer", "Home");
         }
+        //=========================================================================>
 
+        [AllowAnonymous]
         [HttpGet]
         public IActionResult Login(string? returnUrl = null)
         {
@@ -122,16 +128,19 @@ namespace Agri_energy_Connect_ST10369044.Controllers
         //----------------------------------------------------------------->
         // Posts the Login
         //---------------------------------------------------------------->
+        [AllowAnonymous]
         [HttpPost]
-        public async Task<IActionResult> Login(LoginViewModel vm, string? returnUrl = null)
+        [ValidateAntiForgeryToken]
+        //=========================================================================>
+        public async Task<IActionResult> Login(LoginViewModel lvm, string? returnUrl = null)
         {
-            if (!ModelState.IsValid) return View(vm);
+            if (!ModelState.IsValid) return View(lvm);
 
-            var user = _db.Users.SingleOrDefault(u => u.Email == vm.Email);
+            var user = _db.Users.SingleOrDefault(u => u.Email ==lvm.Email);
             if (user == null)
             {
                 ModelState.AddModelError("", "Invalid Email or password.");
-                return View(vm);
+                return View(lvm);
             }
 
             //--------------------------------------------------->
@@ -139,7 +148,7 @@ namespace Agri_energy_Connect_ST10369044.Controllers
             //-------------------------------------------------->
             var parts = user.Password.Split(':');
             var attempt = Convert.ToBase64String(KeyDerivation.Pbkdf2(
-            password: vm.Password,
+            password: lvm.Password,
             salt: System.Text.Encoding.UTF8.GetBytes(parts[0]),
             prf: KeyDerivationPrf.HMACSHA256,
               iterationCount: 10000,
@@ -148,7 +157,7 @@ namespace Agri_energy_Connect_ST10369044.Controllers
             if (attempt != parts[1])
             {
                 ModelState.AddModelError("", "Invalid username or password.");
-                return View(vm);
+                return View(lvm);
             }
 
             //--------------------------------------------------->
@@ -158,32 +167,40 @@ namespace Agri_energy_Connect_ST10369044.Controllers
             //ADD HOME PAGE
             return Redirect(returnUrl ?? Url.Action("EmployeesHome", "Home")!);
         }
+        //=========================================================================>
 
         //--------------------------------------------------->
         //Posts the logout to redirect to the login page
         //-------------------------------------------------->
+        [Authorize]
         [HttpPost]
+        [ValidateAntiForgeryToken]
+        //=========================================================================>
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToAction("Login");
         }
+        //=========================================================================>
 
         //--------------------------------------------------->
         // Helper for the cookies
         //-------------------------------------------------->
+        //=========================================================================>
         private async Task SignInUser(Users user)
         {
             var claims = new List<Claim>
-    {
-      new Claim(ClaimTypes.NameIdentifier, user.UserID.ToString()),
-      new Claim(ClaimTypes.Name, user.Email)
-    };
+                {
+                    new Claim(ClaimTypes.NameIdentifier, user.UserID.ToString()),
+                    new Claim(ClaimTypes.Name, user.Email),
+                    new Claim(ClaimTypes.Role, user.Role),
+                };
             var identity = new ClaimsIdentity(
               claims, CookieAuthenticationDefaults.AuthenticationScheme);
             var principal = new ClaimsPrincipal(identity);
             await HttpContext.SignInAsync(
               CookieAuthenticationDefaults.AuthenticationScheme, principal);
         }
+        //=========================================================================>
     }
 }

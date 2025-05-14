@@ -20,7 +20,8 @@
                 Login
             </h3>
 
-            <form asp-action="Login" method="post" novalidate class="mt-4">
+            <form asp-action="Login" asp-controller= "Account" method="post" novalidate class="mt-4">
+                @Html.AntiForgeryToken()
                 <div asp-validation-summary="All" class="text-danger mb-3"></div>
 
                 <!-- Email Label Box -->
