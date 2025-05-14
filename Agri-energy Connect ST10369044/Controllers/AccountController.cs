@@ -67,8 +67,7 @@ namespace Agri_energy_Connect_ST10369044.Controllers
             //Signs the user in and directs them to the home page
             //-------------------------------------------------------------->
             await SignInUser(user);
-            //RETURN TO EMPLYEE HOME PAGE
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Home", "Home");
         }
 
         //--------------------------------------------------->
@@ -153,7 +152,7 @@ namespace Agri_energy_Connect_ST10369044.Controllers
             }
 
             //--------------------------------------------------->
-            //Signs in
+            //Logs in
             //-------------------------------------------------->
             await SignInUser(user);
             //ADD HOME PAGE
