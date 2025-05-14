@@ -179,7 +179,7 @@ namespace Agri_energy_Connect_ST10369044.Controllers
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            return RedirectToAction("Login");
+            return RedirectToAction("Login","Home");
         }
         //=========================================================================>
 
