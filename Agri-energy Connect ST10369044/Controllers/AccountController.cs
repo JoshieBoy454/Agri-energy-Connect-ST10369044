@@ -164,8 +164,12 @@ namespace Agri_energy_Connect_ST10369044.Controllers
             //Logs in
             //-------------------------------------------------->
             await SignInUser(user);
+            if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
+            {
+                return Redirect(returnUrl);
+            }
             //ADD HOME PAGE
-            return Redirect(returnUrl ?? Url.Action()!);
+            return RedirectToAction("Home", "Home");
         }
         //=========================================================================>
 
