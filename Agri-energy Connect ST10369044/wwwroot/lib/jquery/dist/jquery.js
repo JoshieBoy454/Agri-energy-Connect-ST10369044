@@ -60,7 +60,7 @@ var flat = arr.flat ? function( array ) {
 
 var push = arr.push;
 
-var indexOf = arr.indexOf;
+var HomeOf = arr.HomeOf;
 
 var class2type = {};
 
@@ -416,7 +416,7 @@ jQuery.extend( {
 	},
 
 	inArray: function( elem, arr, i ) {
-		return arr == null ? -1 : indexOf.call( arr, elem, i );
+		return arr == null ? -1 : HomeOf.call( arr, elem, i );
 	},
 
 	// Support: Android <=4.0 only, PhantomJS 1 only
@@ -578,9 +578,9 @@ var i,
 	push = arr.push,
 	slice = arr.slice,
 
-	// Use a stripped-down indexOf as it's faster than native
-	// https://jsperf.com/thor-indexof-vs-for/5
-	indexOf = function( list, elem ) {
+	// Use a stripped-down HomeOf as it's faster than native
+	// https://jsperf.com/thor-Homeof-vs-for/5
+	HomeOf = function( list, elem ) {
 		var i = 0,
 			len = list.length;
 		for ( ; i < len; i++ ) {
@@ -975,9 +975,9 @@ function addHandle( attrs, handler ) {
 function siblingCheck( a, b ) {
 	var cur = b && a,
 		diff = cur && a.nodeType === 1 && b.nodeType === 1 &&
-			a.sourceIndex - b.sourceIndex;
+			a.sourceHome - b.sourceHome;
 
-	// Use IE sourceIndex if available on both nodes
+	// Use IE sourceHome if available on both nodes
 	if ( diff ) {
 		return diff;
 	}
@@ -1081,12 +1081,12 @@ function createPositionalPseudo( fn ) {
 		argument = +argument;
 		return markFunction( function( seed, matches ) {
 			var j,
-				matchIndexes = fn( [], seed.length, argument ),
-				i = matchIndexes.length;
+				matchHomees = fn( [], seed.length, argument ),
+				i = matchHomees.length;
 
-			// Match elements found at the specified indexes
+			// Match elements found at the specified Homees
 			while ( i-- ) {
-				if ( seed[ ( j = matchIndexes[ i ] ) ] ) {
+				if ( seed[ ( j = matchHomees[ i ] ) ] ) {
 					seed[ j ] = !( matches[ j ] = seed[ j ] );
 				}
 			}
@@ -1526,7 +1526,7 @@ setDocument = Sizzle.setDocument = function( node ) {
 
 			// Maintain original order
 			return sortInput ?
-				( indexOf( sortInput, a ) - indexOf( sortInput, b ) ) :
+				( HomeOf( sortInput, a ) - HomeOf( sortInput, b ) ) :
 				0;
 		}
 
@@ -1560,7 +1560,7 @@ setDocument = Sizzle.setDocument = function( node ) {
 				aup ? -1 :
 				bup ? 1 :
 				sortInput ?
-				( indexOf( sortInput, a ) - indexOf( sortInput, b ) ) :
+				( HomeOf( sortInput, a ) - HomeOf( sortInput, b ) ) :
 				0;
 
 		// If the nodes are siblings, we can do a quick check
@@ -1844,9 +1844,9 @@ Expr = Sizzle.selectors = {
 				( excess = tokenize( unquoted, true ) ) &&
 
 				// advance to the next closing parenthesis
-				( excess = unquoted.indexOf( ")", unquoted.length - excess ) - unquoted.length ) ) {
+				( excess = unquoted.HomeOf( ")", unquoted.length - excess ) - unquoted.length ) ) {
 
-				// excess is a negative index
+				// excess is a negative Home
 				match[ 0 ] = match[ 0 ].slice( 0, excess );
 				match[ 2 ] = unquoted.slice( 0, excess );
 			}
@@ -1902,10 +1902,10 @@ Expr = Sizzle.selectors = {
 
 				return operator === "=" ? result === check :
 					operator === "!=" ? result !== check :
-					operator === "^=" ? check && result.indexOf( check ) === 0 :
-					operator === "*=" ? check && result.indexOf( check ) > -1 :
+					operator === "^=" ? check && result.HomeOf( check ) === 0 :
+					operator === "*=" ? check && result.HomeOf( check ) > -1 :
 					operator === "$=" ? check && result.slice( -check.length ) === check :
-					operator === "~=" ? ( " " + result.replace( rwhitespace, " " ) + " " ).indexOf( check ) > -1 :
+					operator === "~=" ? ( " " + result.replace( rwhitespace, " " ) + " " ).HomeOf( check ) > -1 :
 					operator === "|=" ? result === check || result.slice( 0, check.length + 1 ) === check + "-" :
 					false;
 				/* eslint-enable max-len */
@@ -1926,7 +1926,7 @@ Expr = Sizzle.selectors = {
 				} :
 
 				function( elem, _context, xml ) {
-					var cache, uniqueCache, outerCache, node, nodeIndex, start,
+					var cache, uniqueCache, outerCache, node, nodeHome, start,
 						dir = simple !== forward ? "nextSibling" : "previousSibling",
 						parent = elem.parentNode,
 						name = ofType && elem.nodeName.toLowerCase(),
@@ -1959,7 +1959,7 @@ Expr = Sizzle.selectors = {
 						// non-xml :nth-child(...) stores cache data on `parent`
 						if ( forward && useCache ) {
 
-							// Seek `elem` from a previously-cached index
+							// Seek `elem` from a previously-cached Home
 
 							// ...in a gzip-friendly way
 							node = parent;
@@ -1971,25 +1971,25 @@ Expr = Sizzle.selectors = {
 								( outerCache[ node.uniqueID ] = {} );
 
 							cache = uniqueCache[ type ] || [];
-							nodeIndex = cache[ 0 ] === dirruns && cache[ 1 ];
-							diff = nodeIndex && cache[ 2 ];
-							node = nodeIndex && parent.childNodes[ nodeIndex ];
+							nodeHome = cache[ 0 ] === dirruns && cache[ 1 ];
+							diff = nodeHome && cache[ 2 ];
+							node = nodeHome && parent.childNodes[ nodeHome ];
 
-							while ( ( node = ++nodeIndex && node && node[ dir ] ||
+							while ( ( node = ++nodeHome && node && node[ dir ] ||
 
 								// Fallback to seeking `elem` from the start
-								( diff = nodeIndex = 0 ) || start.pop() ) ) {
+								( diff = nodeHome = 0 ) || start.pop() ) ) {
 
-								// When found, cache indexes on `parent` and break
+								// When found, cache Homees on `parent` and break
 								if ( node.nodeType === 1 && ++diff && node === elem ) {
-									uniqueCache[ type ] = [ dirruns, nodeIndex, diff ];
+									uniqueCache[ type ] = [ dirruns, nodeHome, diff ];
 									break;
 								}
 							}
 
 						} else {
 
-							// Use previously-cached element index if available
+							// Use previously-cached element Home if available
 							if ( useCache ) {
 
 								// ...in a gzip-friendly way
@@ -2002,8 +2002,8 @@ Expr = Sizzle.selectors = {
 									( outerCache[ node.uniqueID ] = {} );
 
 								cache = uniqueCache[ type ] || [];
-								nodeIndex = cache[ 0 ] === dirruns && cache[ 1 ];
-								diff = nodeIndex;
+								nodeHome = cache[ 0 ] === dirruns && cache[ 1 ];
+								diff = nodeHome;
 							}
 
 							// xml :nth-child(...)
@@ -2011,15 +2011,15 @@ Expr = Sizzle.selectors = {
 							if ( diff === false ) {
 
 								// Use the same loop as above to seek `elem` from the start
-								while ( ( node = ++nodeIndex && node && node[ dir ] ||
-									( diff = nodeIndex = 0 ) || start.pop() ) ) {
+								while ( ( node = ++nodeHome && node && node[ dir ] ||
+									( diff = nodeHome = 0 ) || start.pop() ) ) {
 
 									if ( ( ofType ?
 										node.nodeName.toLowerCase() === name :
 										node.nodeType === 1 ) &&
 										++diff ) {
 
-										// Cache the index of each encountered element
+										// Cache the Home of each encountered element
 										if ( useCache ) {
 											outerCache = node[ expando ] ||
 												( node[ expando ] = {} );
@@ -2073,7 +2073,7 @@ Expr = Sizzle.selectors = {
 							matched = fn( seed, argument ),
 							i = matched.length;
 						while ( i-- ) {
-							idx = indexOf( seed, matched[ i ] );
+							idx = HomeOf( seed, matched[ i ] );
 							seed[ idx ] = !( matches[ idx ] = matched[ i ] );
 						}
 					} ) :
@@ -2130,7 +2130,7 @@ Expr = Sizzle.selectors = {
 		"contains": markFunction( function( text ) {
 			text = text.replace( runescape, funescape );
 			return function( elem ) {
-				return ( elem.textContent || getText( elem ) ).indexOf( text ) > -1;
+				return ( elem.textContent || getText( elem ) ).HomeOf( text ) > -1;
 			};
 		} ),
 
@@ -2156,7 +2156,7 @@ Expr = Sizzle.selectors = {
 						elem.getAttribute( "xml:lang" ) || elem.getAttribute( "lang" ) ) ) {
 
 						elemLang = elemLang.toLowerCase();
-						return elemLang === lang || elemLang.indexOf( lang + "-" ) === 0;
+						return elemLang === lang || elemLang.HomeOf( lang + "-" ) === 0;
 					}
 				} while ( ( elem = elem.parentNode ) && elem.nodeType === 1 );
 				return false;
@@ -2176,7 +2176,7 @@ Expr = Sizzle.selectors = {
 		"focus": function( elem ) {
 			return elem === document.activeElement &&
 				( !document.hasFocus || document.hasFocus() ) &&
-				!!( elem.type || elem.href || ~elem.tabIndex );
+				!!( elem.type || elem.href || ~elem.tabHome );
 		},
 
 		// Boolean properties
@@ -2198,7 +2198,7 @@ Expr = Sizzle.selectors = {
 			// options in Safari work properly
 			if ( elem.parentNode ) {
 				// eslint-disable-next-line no-unused-expressions
-				elem.parentNode.selectedIndex;
+				elem.parentNode.selectedHome;
 			}
 
 			return elem.selected === true;
@@ -2253,48 +2253,48 @@ Expr = Sizzle.selectors = {
 			return [ 0 ];
 		} ),
 
-		"last": createPositionalPseudo( function( _matchIndexes, length ) {
+		"last": createPositionalPseudo( function( _matchHomees, length ) {
 			return [ length - 1 ];
 		} ),
 
-		"eq": createPositionalPseudo( function( _matchIndexes, length, argument ) {
+		"eq": createPositionalPseudo( function( _matchHomees, length, argument ) {
 			return [ argument < 0 ? argument + length : argument ];
 		} ),
 
-		"even": createPositionalPseudo( function( matchIndexes, length ) {
+		"even": createPositionalPseudo( function( matchHomees, length ) {
 			var i = 0;
 			for ( ; i < length; i += 2 ) {
-				matchIndexes.push( i );
+				matchHomees.push( i );
 			}
-			return matchIndexes;
+			return matchHomees;
 		} ),
 
-		"odd": createPositionalPseudo( function( matchIndexes, length ) {
+		"odd": createPositionalPseudo( function( matchHomees, length ) {
 			var i = 1;
 			for ( ; i < length; i += 2 ) {
-				matchIndexes.push( i );
+				matchHomees.push( i );
 			}
-			return matchIndexes;
+			return matchHomees;
 		} ),
 
-		"lt": createPositionalPseudo( function( matchIndexes, length, argument ) {
+		"lt": createPositionalPseudo( function( matchHomees, length, argument ) {
 			var i = argument < 0 ?
 				argument + length :
 				argument > length ?
 					length :
 					argument;
 			for ( ; --i >= 0; ) {
-				matchIndexes.push( i );
+				matchHomees.push( i );
 			}
-			return matchIndexes;
+			return matchHomees;
 		} ),
 
-		"gt": createPositionalPseudo( function( matchIndexes, length, argument ) {
+		"gt": createPositionalPseudo( function( matchHomees, length, argument ) {
 			var i = argument < 0 ? argument + length : argument;
 			for ( ; ++i < length; ) {
-				matchIndexes.push( i );
+				matchHomees.push( i );
 			}
-			return matchIndexes;
+			return matchHomees;
 		} )
 	}
 };
@@ -2582,7 +2582,7 @@ function setMatcher( preFilter, selector, matcher, postFilter, postFinder, postS
 				i = matcherOut.length;
 				while ( i-- ) {
 					if ( ( elem = matcherOut[ i ] ) &&
-						( temp = postFinder ? indexOf( seed, elem ) : preMap[ i ] ) > -1 ) {
+						( temp = postFinder ? HomeOf( seed, elem ) : preMap[ i ] ) > -1 ) {
 
 						seed[ temp ] = !( results[ temp ] = elem );
 					}
@@ -2617,7 +2617,7 @@ function matcherFromTokens( tokens ) {
 			return elem === checkContext;
 		}, implicitRelative, true ),
 		matchAnyContext = addCombinator( function( elem ) {
-			return indexOf( checkContext, elem ) > -1;
+			return HomeOf( checkContext, elem ) > -1;
 		}, implicitRelative, true ),
 		matchers = [ function( elem, context, xml ) {
 			var ret = ( !leadingRelative && ( xml || context !== outermostContext ) ) || (
@@ -2764,7 +2764,7 @@ function matcherFromGroupMatchers( elementMatchers, setMatchers ) {
 						}
 					}
 
-					// Discard index placeholder values to get only actual matches
+					// Discard Home placeholder values to get only actual matches
 					setMatched = condense( setMatched );
 				}
 
@@ -3053,7 +3053,7 @@ function winnow( elements, qualifier, not ) {
 	// Arraylike of elements (jQuery, arguments, Array)
 	if ( typeof qualifier !== "string" ) {
 		return jQuery.grep( elements, function( elem ) {
-			return ( indexOf.call( qualifier, elem ) > -1 ) !== not;
+			return ( HomeOf.call( qualifier, elem ) > -1 ) !== not;
 		} );
 	}
 
@@ -3279,7 +3279,7 @@ jQuery.fn.extend( {
 
 					// Always skip document fragments
 					if ( cur.nodeType < 11 && ( targets ?
-						targets.index( cur ) > -1 :
+						targets.Home( cur ) > -1 :
 
 						// Don't pass non-elements to Sizzle
 						cur.nodeType === 1 &&
@@ -3296,20 +3296,20 @@ jQuery.fn.extend( {
 	},
 
 	// Determine the position of an element within the set
-	index: function( elem ) {
+	Home: function( elem ) {
 
-		// No argument, return index in parent
+		// No argument, return Home in parent
 		if ( !elem ) {
 			return ( this[ 0 ] && this[ 0 ].parentNode ) ? this.first().prevAll().length : -1;
 		}
 
-		// Index in selector
+		// Home in selector
 		if ( typeof elem === "string" ) {
-			return indexOf.call( jQuery( elem ), this[ 0 ] );
+			return HomeOf.call( jQuery( elem ), this[ 0 ] );
 		}
 
 		// Locate the position of the desired element
-		return indexOf.call( this,
+		return HomeOf.call( this,
 
 			// If it receives a jQuery object, the first element is used
 			elem.jquery ? elem[ 0 ] : elem
@@ -3480,8 +3480,8 @@ jQuery.Callbacks = function( options ) {
 		// Queue of execution data for repeatable lists
 		queue = [],
 
-		// Index of currently firing callback (modified by add/remove as needed)
-		firingIndex = -1,
+		// Home of currently firing callback (modified by add/remove as needed)
+		firingHome = -1,
 
 		// Fire callbacks
 		fire = function() {
@@ -3490,18 +3490,18 @@ jQuery.Callbacks = function( options ) {
 			locked = locked || options.once;
 
 			// Execute callbacks for all pending executions,
-			// respecting firingIndex overrides and runtime changes
+			// respecting firingHome overrides and runtime changes
 			fired = firing = true;
-			for ( ; queue.length; firingIndex = -1 ) {
+			for ( ; queue.length; firingHome = -1 ) {
 				memory = queue.shift();
-				while ( ++firingIndex < list.length ) {
+				while ( ++firingHome < list.length ) {
 
 					// Run callback and check for early termination
-					if ( list[ firingIndex ].apply( memory[ 0 ], memory[ 1 ] ) === false &&
+					if ( list[ firingHome ].apply( memory[ 0 ], memory[ 1 ] ) === false &&
 						options.stopOnFalse ) {
 
 						// Jump to end and forget the data so .add doesn't re-fire
-						firingIndex = list.length;
+						firingHome = list.length;
 						memory = false;
 					}
 				}
@@ -3537,7 +3537,7 @@ jQuery.Callbacks = function( options ) {
 
 					// If we have memory from a past run, we should fire after adding
 					if ( memory && !firing ) {
-						firingIndex = list.length - 1;
+						firingHome = list.length - 1;
 						queue.push( memory );
 					}
 
@@ -3565,13 +3565,13 @@ jQuery.Callbacks = function( options ) {
 			// Remove a callback from the list
 			remove: function() {
 				jQuery.each( arguments, function( _, arg ) {
-					var index;
-					while ( ( index = jQuery.inArray( arg, list, index ) ) > -1 ) {
-						list.splice( index, 1 );
+					var Home;
+					while ( ( Home = jQuery.inArray( arg, list, Home ) ) > -1 ) {
+						list.splice( Home, 1 );
 
-						// Handle firing indexes
-						if ( index <= firingIndex ) {
-							firingIndex--;
+						// Handle firing Homees
+						if ( Home <= firingHome ) {
+							firingHome--;
 						}
 					}
 				} );
@@ -3695,7 +3695,7 @@ jQuery.extend( {
 		var tuples = [
 
 				// action, add listener, callbacks,
-				// ... .then handlers, argument index, [final state]
+				// ... .then handlers, argument Home, [final state]
 				[ "notify", "progress", jQuery.Callbacks( "memory" ),
 					jQuery.Callbacks( "memory" ), 2 ],
 				[ "resolve", "done", jQuery.Callbacks( "once memory" ),
@@ -4493,7 +4493,7 @@ jQuery.fn.extend( {
 						// The attrs elements can be null (#14894)
 						if ( attrs[ i ] ) {
 							name = attrs[ i ].name;
-							if ( name.indexOf( "data-" ) === 0 ) {
+							if ( name.HomeOf( "data-" ) === 0 ) {
 								name = camelCase( name.slice( 5 ) );
 								dataAttr( elem, name, data[ name ] );
 							}
@@ -4833,12 +4833,12 @@ function getDefaultDisplay( elem ) {
 function showHide( elements, show ) {
 	var display, elem,
 		values = [],
-		index = 0,
+		Home = 0,
 		length = elements.length;
 
 	// Determine new display value for elements that need to change
-	for ( ; index < length; index++ ) {
-		elem = elements[ index ];
+	for ( ; Home < length; Home++ ) {
+		elem = elements[ Home ];
 		if ( !elem.style ) {
 			continue;
 		}
@@ -4850,17 +4850,17 @@ function showHide( elements, show ) {
 			// check is required in this first loop unless we have a nonempty display value (either
 			// inline or about-to-be-restored)
 			if ( display === "none" ) {
-				values[ index ] = dataPriv.get( elem, "display" ) || null;
-				if ( !values[ index ] ) {
+				values[ Home ] = dataPriv.get( elem, "display" ) || null;
+				if ( !values[ Home ] ) {
 					elem.style.display = "";
 				}
 			}
 			if ( elem.style.display === "" && isHiddenWithinTree( elem ) ) {
-				values[ index ] = getDefaultDisplay( elem );
+				values[ Home ] = getDefaultDisplay( elem );
 			}
 		} else {
 			if ( display !== "none" ) {
-				values[ index ] = "none";
+				values[ Home ] = "none";
 
 				// Remember what we're overwriting
 				dataPriv.set( elem, "display", display );
@@ -4869,9 +4869,9 @@ function showHide( elements, show ) {
 	}
 
 	// Set the display of the elements in a second loop to avoid constant reflow
-	for ( index = 0; index < length; index++ ) {
-		if ( values[ index ] != null ) {
-			elements[ index ].style.display = values[ index ];
+	for ( Home = 0; Home < length; Home++ ) {
+		if ( values[ Home ] != null ) {
+			elements[ Home ].style.display = values[ Home ];
 		}
 	}
 
@@ -5482,7 +5482,7 @@ jQuery.event = {
 
 						if ( matchedSelectors[ sel ] === undefined ) {
 							matchedSelectors[ sel ] = handleObj.needsContext ?
-								jQuery( sel, this ).index( cur ) > -1 :
+								jQuery( sel, this ).Home( cur ) > -1 :
 								jQuery.find( sel, this, null, [ cur ] ).length;
 						}
 						if ( matchedSelectors[ sel ] ) {
@@ -6046,10 +6046,10 @@ function domManip( collection, args, callback, ignored ) {
 	if ( valueIsFunction ||
 			( l > 1 && typeof value === "string" &&
 				!support.checkClone && rchecked.test( value ) ) ) {
-		return collection.each( function( index ) {
-			var self = collection.eq( index );
+		return collection.each( function( Home ) {
+			var self = collection.eq( Home );
 			if ( valueIsFunction ) {
-				args[ 0 ] = value.call( this, index, self.html() );
+				args[ 0 ] = value.call( this, Home, self.html() );
 			}
 			domManip( self, args, callback, ignored );
 		} );
@@ -6620,7 +6620,7 @@ function curCSS( elem, name, computed ) {
 	return ret !== undefined ?
 
 		// Support: IE <=9 - 11 only
-		// IE returns zIndex value as an integer.
+		// IE returns zHome value as an integer.
 		ret + "" :
 		ret;
 }
@@ -6885,7 +6885,7 @@ jQuery.extend( {
 		"order": true,
 		"orphans": true,
 		"widows": true,
-		"zIndex": true,
+		"zHome": true,
 		"zoom": true
 	},
 
@@ -6942,7 +6942,7 @@ jQuery.extend( {
 			}
 
 			// background-* props affect original clone's values
-			if ( !support.clearCloneStyle && value === "" && name.indexOf( "background" ) === 0 ) {
+			if ( !support.clearCloneStyle && value === "" && name.HomeOf( "background" ) === 0 ) {
 				style[ name ] = "inherit";
 			}
 
@@ -7315,10 +7315,10 @@ function genFx( type, includeWidth ) {
 function createTween( value, prop, animation ) {
 	var tween,
 		collection = ( Animation.tweeners[ prop ] || [] ).concat( Animation.tweeners[ "*" ] ),
-		index = 0,
+		Home = 0,
 		length = collection.length;
-	for ( ; index < length; index++ ) {
-		if ( ( tween = collection[ index ].call( animation, prop, value ) ) ) {
+	for ( ; Home < length; Home++ ) {
+		if ( ( tween = collection[ Home ].call( animation, prop, value ) ) ) {
 
 			// We're done with this property
 			return tween;
@@ -7499,21 +7499,21 @@ function defaultPrefilter( elem, props, opts ) {
 }
 
 function propFilter( props, specialEasing ) {
-	var index, name, easing, value, hooks;
+	var Home, name, easing, value, hooks;
 
 	// camelCase, specialEasing and expand cssHook pass
-	for ( index in props ) {
-		name = camelCase( index );
+	for ( Home in props ) {
+		name = camelCase( Home );
 		easing = specialEasing[ name ];
-		value = props[ index ];
+		value = props[ Home ];
 		if ( Array.isArray( value ) ) {
 			easing = value[ 1 ];
-			value = props[ index ] = value[ 0 ];
+			value = props[ Home ] = value[ 0 ];
 		}
 
-		if ( index !== name ) {
+		if ( Home !== name ) {
 			props[ name ] = value;
-			delete props[ index ];
+			delete props[ Home ];
 		}
 
 		hooks = jQuery.cssHooks[ name ];
@@ -7522,11 +7522,11 @@ function propFilter( props, specialEasing ) {
 			delete props[ name ];
 
 			// Not quite $.extend, this won't overwrite existing keys.
-			// Reusing 'index' because we have the correct "name"
-			for ( index in value ) {
-				if ( !( index in props ) ) {
-					props[ index ] = value[ index ];
-					specialEasing[ index ] = easing;
+			// Reusing 'Home' because we have the correct "name"
+			for ( Home in value ) {
+				if ( !( Home in props ) ) {
+					props[ Home ] = value[ Home ];
+					specialEasing[ Home ] = easing;
 				}
 			}
 		} else {
@@ -7538,7 +7538,7 @@ function propFilter( props, specialEasing ) {
 function Animation( elem, properties, options ) {
 	var result,
 		stopped,
-		index = 0,
+		Home = 0,
 		length = Animation.prefilters.length,
 		deferred = jQuery.Deferred().always( function() {
 
@@ -7556,11 +7556,11 @@ function Animation( elem, properties, options ) {
 				// Archaic crash bug won't allow us to use `1 - ( 0.5 || 0 )` (#12497)
 				temp = remaining / animation.duration || 0,
 				percent = 1 - temp,
-				index = 0,
+				Home = 0,
 				length = animation.tweens.length;
 
-			for ( ; index < length; index++ ) {
-				animation.tweens[ index ].run( percent );
+			for ( ; Home < length; Home++ ) {
+				animation.tweens[ Home ].run( percent );
 			}
 
 			deferred.notifyWith( elem, [ animation, percent, remaining ] );
@@ -7598,7 +7598,7 @@ function Animation( elem, properties, options ) {
 				return tween;
 			},
 			stop: function( gotoEnd ) {
-				var index = 0,
+				var Home = 0,
 
 					// If we are going to the end, we want to run all the tweens
 					// otherwise we skip this part
@@ -7607,8 +7607,8 @@ function Animation( elem, properties, options ) {
 					return this;
 				}
 				stopped = true;
-				for ( ; index < length; index++ ) {
-					animation.tweens[ index ].run( 1 );
+				for ( ; Home < length; Home++ ) {
+					animation.tweens[ Home ].run( 1 );
 				}
 
 				// Resolve when we played the last frame; otherwise, reject
@@ -7625,8 +7625,8 @@ function Animation( elem, properties, options ) {
 
 	propFilter( props, animation.opts.specialEasing );
 
-	for ( ; index < length; index++ ) {
-		result = Animation.prefilters[ index ].call( animation, elem, props, animation.opts );
+	for ( ; Home < length; Home++ ) {
+		result = Animation.prefilters[ Home ].call( animation, elem, props, animation.opts );
 		if ( result ) {
 			if ( isFunction( result.stop ) ) {
 				jQuery._queueHooks( animation.elem, animation.opts.queue ).stop =
@@ -7679,11 +7679,11 @@ jQuery.Animation = jQuery.extend( Animation, {
 		}
 
 		var prop,
-			index = 0,
+			Home = 0,
 			length = props.length;
 
-		for ( ; index < length; index++ ) {
-			prop = props[ index ];
+		for ( ; Home < length; Home++ ) {
+			prop = props[ Home ];
 			Animation.tweeners[ prop ] = Animation.tweeners[ prop ] || [];
 			Animation.tweeners[ prop ].unshift( callback );
 		}
@@ -7791,29 +7791,29 @@ jQuery.fn.extend( {
 
 		return this.each( function() {
 			var dequeue = true,
-				index = type != null && type + "queueHooks",
+				Home = type != null && type + "queueHooks",
 				timers = jQuery.timers,
 				data = dataPriv.get( this );
 
-			if ( index ) {
-				if ( data[ index ] && data[ index ].stop ) {
-					stopQueue( data[ index ] );
+			if ( Home ) {
+				if ( data[ Home ] && data[ Home ].stop ) {
+					stopQueue( data[ Home ] );
 				}
 			} else {
-				for ( index in data ) {
-					if ( data[ index ] && data[ index ].stop && rrun.test( index ) ) {
-						stopQueue( data[ index ] );
+				for ( Home in data ) {
+					if ( data[ Home ] && data[ Home ].stop && rrun.test( Home ) ) {
+						stopQueue( data[ Home ] );
 					}
 				}
 			}
 
-			for ( index = timers.length; index--; ) {
-				if ( timers[ index ].elem === this &&
-					( type == null || timers[ index ].queue === type ) ) {
+			for ( Home = timers.length; Home--; ) {
+				if ( timers[ Home ].elem === this &&
+					( type == null || timers[ Home ].queue === type ) ) {
 
-					timers[ index ].anim.stop( gotoEnd );
+					timers[ Home ].anim.stop( gotoEnd );
 					dequeue = false;
-					timers.splice( index, 1 );
+					timers.splice( Home, 1 );
 				}
 			}
 
@@ -7830,7 +7830,7 @@ jQuery.fn.extend( {
 			type = type || "fx";
 		}
 		return this.each( function() {
-			var index,
+			var Home,
 				data = dataPriv.get( this ),
 				queue = data[ type + "queue" ],
 				hooks = data[ type + "queueHooks" ],
@@ -7848,17 +7848,17 @@ jQuery.fn.extend( {
 			}
 
 			// Look for any active animations, and finish them
-			for ( index = timers.length; index--; ) {
-				if ( timers[ index ].elem === this && timers[ index ].queue === type ) {
-					timers[ index ].anim.stop( true );
-					timers.splice( index, 1 );
+			for ( Home = timers.length; Home--; ) {
+				if ( timers[ Home ].elem === this && timers[ Home ].queue === type ) {
+					timers[ Home ].anim.stop( true );
+					timers.splice( Home, 1 );
 				}
 			}
 
 			// Look for any animations in the old queue and finish them
-			for ( index = 0; index < length; index++ ) {
-				if ( queue[ index ] && queue[ index ].finish ) {
-					queue[ index ].finish.call( this );
+			for ( Home = 0; Home < length; Home++ ) {
+				if ( queue[ Home ] && queue[ Home ].finish ) {
+					queue[ Home ].finish.call( this );
 				}
 			}
 
@@ -7943,7 +7943,7 @@ jQuery.fx.speeds = {
 
 
 // Based off of the plugin by Clint Helfers, with permission.
-// https://web.archive.org/web/20100324014747/http://blindsignals.com/index.php/2009/07/jquery-delay/
+// https://web.archive.org/web/20100324014747/http://blindsignals.com/Home.php/2009/07/jquery-delay/
 jQuery.fn.delay = function( time, type ) {
 	time = jQuery.fx ? jQuery.fx.speeds[ time ] || time : time;
 	type = type || "fx";
@@ -7969,7 +7969,7 @@ jQuery.fn.delay = function( time, type ) {
 	support.checkOn = input.value !== "";
 
 	// Support: IE <=11 only
-	// Must access selectedIndex to make default options select
+	// Must access selectedHome to make default options select
 	support.optSelected = opt.selected;
 
 	// Support: IE <=11 only
@@ -8162,18 +8162,18 @@ jQuery.extend( {
 	},
 
 	propHooks: {
-		tabIndex: {
+		tabHome: {
 			get: function( elem ) {
 
 				// Support: IE <=9 - 11 only
-				// elem.tabIndex doesn't always return the
+				// elem.tabHome doesn't always return the
 				// correct value when it hasn't been explicitly set
-				// https://web.archive.org/web/20141116233347/http://fluidproject.org/blog/2008/01/09/getting-setting-and-removing-tabindex-values-with-javascript/
+				// https://web.archive.org/web/20141116233347/http://fluidproject.org/blog/2008/01/09/getting-setting-and-removing-tabHome-values-with-javascript/
 				// Use proper attribute retrieval(#12072)
-				var tabindex = jQuery.find.attr( elem, "tabindex" );
+				var tabHome = jQuery.find.attr( elem, "tabHome" );
 
-				if ( tabindex ) {
-					return parseInt( tabindex, 10 );
+				if ( tabHome ) {
+					return parseInt( tabHome, 10 );
 				}
 
 				if (
@@ -8196,7 +8196,7 @@ jQuery.extend( {
 } );
 
 // Support: IE <=11 only
-// Accessing the selectedIndex property
+// Accessing the selectedHome property
 // forces the browser to respect setting selected
 // on the option
 // The getter ensures a default option is selected
@@ -8211,7 +8211,7 @@ if ( !support.optSelected ) {
 
 			var parent = elem.parentNode;
 			if ( parent && parent.parentNode ) {
-				parent.parentNode.selectedIndex;
+				parent.parentNode.selectedHome;
 			}
 			return null;
 		},
@@ -8221,10 +8221,10 @@ if ( !support.optSelected ) {
 
 			var parent = elem.parentNode;
 			if ( parent ) {
-				parent.selectedIndex;
+				parent.selectedHome;
 
 				if ( parent.parentNode ) {
-					parent.parentNode.selectedIndex;
+					parent.parentNode.selectedHome;
 				}
 			}
 		}
@@ -8232,7 +8232,7 @@ if ( !support.optSelected ) {
 }
 
 jQuery.each( [
-	"tabIndex",
+	"tabHome",
 	"readOnly",
 	"maxLength",
 	"cellSpacing",
@@ -8292,7 +8292,7 @@ jQuery.fn.extend( {
 				if ( cur ) {
 					j = 0;
 					while ( ( clazz = classes[ j++ ] ) ) {
-						if ( cur.indexOf( " " + clazz + " " ) < 0 ) {
+						if ( cur.HomeOf( " " + clazz + " " ) < 0 ) {
 							cur += clazz + " ";
 						}
 					}
@@ -8337,7 +8337,7 @@ jQuery.fn.extend( {
 					while ( ( clazz = classes[ j++ ] ) ) {
 
 						// Remove *all* instances
-						while ( cur.indexOf( " " + clazz + " " ) > -1 ) {
+						while ( cur.HomeOf( " " + clazz + " " ) > -1 ) {
 							cur = cur.replace( " " + clazz + " ", " " );
 						}
 					}
@@ -8422,7 +8422,7 @@ jQuery.fn.extend( {
 		className = " " + selector + " ";
 		while ( ( elem = this[ i++ ] ) ) {
 			if ( elem.nodeType === 1 &&
-				( " " + stripAndCollapse( getClass( elem ) ) + " " ).indexOf( className ) > -1 ) {
+				( " " + stripAndCollapse( getClass( elem ) ) + " " ).HomeOf( className ) > -1 ) {
 				return true;
 			}
 		}
@@ -8525,16 +8525,16 @@ jQuery.extend( {
 			get: function( elem ) {
 				var value, option, i,
 					options = elem.options,
-					index = elem.selectedIndex,
+					Home = elem.selectedHome,
 					one = elem.type === "select-one",
 					values = one ? null : [],
-					max = one ? index + 1 : options.length;
+					max = one ? Home + 1 : options.length;
 
-				if ( index < 0 ) {
+				if ( Home < 0 ) {
 					i = max;
 
 				} else {
-					i = one ? index : 0;
+					i = one ? Home : 0;
 				}
 
 				// Loop through all the selected options
@@ -8543,7 +8543,7 @@ jQuery.extend( {
 
 					// Support: IE <=9 only
 					// IE8-9 doesn't update selected after form reset (#2551)
-					if ( ( option.selected || i === index ) &&
+					if ( ( option.selected || i === Home ) &&
 
 							// Don't return options that are disabled or in a disabled optgroup
 							!option.disabled &&
@@ -8588,7 +8588,7 @@ jQuery.extend( {
 
 				// Force browsers to behave consistently when non-matching value is set
 				if ( !optionSet ) {
-					elem.selectedIndex = -1;
+					elem.selectedHome = -1;
 				}
 				return values;
 			}
@@ -8647,14 +8647,14 @@ jQuery.extend( jQuery.event, {
 			return;
 		}
 
-		if ( type.indexOf( "." ) > -1 ) {
+		if ( type.HomeOf( "." ) > -1 ) {
 
 			// Namespaced trigger; create a regexp to match event type in handle()
 			namespaces = type.split( "." );
 			type = namespaces.shift();
 			namespaces.sort();
 		}
-		ontype = type.indexOf( ":" ) < 0 && "on" + type;
+		ontype = type.HomeOf( ":" ) < 0 && "on" + type;
 
 		// Caller can pass in a jQuery.Event object, Object, or just an event type string
 		event = event[ jQuery.expando ] ?
@@ -8905,7 +8905,7 @@ function buildParams( prefix, obj, traditional, add ) {
 
 			} else {
 
-				// Item is non-scalar (array or object), encode its numeric index.
+				// Item is non-scalar (array or object), encode its numeric Home.
 				buildParams(
 					prefix + "[" + ( typeof v === "object" && v != null ? i : "" ) + "]",
 					v,
@@ -9610,7 +9610,7 @@ jQuery.extend( {
 
 		// Change '%20' to '+' if this is encoded form body content (gh-2658)
 		} else if ( s.data && s.processData &&
-			( s.contentType || "" ).indexOf( "application/x-www-form-urlencoded" ) === 0 ) {
+			( s.contentType || "" ).HomeOf( "application/x-www-form-urlencoded" ) === 0 ) {
 			s.data = s.data.replace( r20, "+" );
 		}
 
@@ -10217,7 +10217,7 @@ jQuery.ajaxPrefilter( "json jsonp", function( s, originalSettings, jqXHR ) {
 			"url" :
 			typeof s.data === "string" &&
 				( s.contentType || "" )
-					.indexOf( "application/x-www-form-urlencoded" ) === 0 &&
+					.HomeOf( "application/x-www-form-urlencoded" ) === 0 &&
 				rjsonp.test( s.data ) && "data"
 		);
 
@@ -10360,7 +10360,7 @@ jQuery.parseHTML = function( data, context, keepScripts ) {
 jQuery.fn.load = function( url, params, callback ) {
 	var selector, type, response,
 		self = this,
-		off = url.indexOf( " " );
+		off = url.HomeOf( " " );
 
 	if ( off > -1 ) {
 		selector = stripAndCollapse( url.slice( off ) );
@@ -10445,7 +10445,7 @@ jQuery.offset = {
 		curCSSTop = jQuery.css( elem, "top" );
 		curCSSLeft = jQuery.css( elem, "left" );
 		calculatePosition = ( position === "absolute" || position === "fixed" ) &&
-			( curCSSTop + curCSSLeft ).indexOf( "auto" ) > -1;
+			( curCSSTop + curCSSLeft ).HomeOf( "auto" ) > -1;
 
 		// Need to be able to calculate position if either
 		// top or left is auto and position is either absolute or fixed
@@ -10661,7 +10661,7 @@ jQuery.each( { Height: "height", Width: "width" }, function( name, type ) {
 				if ( isWindow( elem ) ) {
 
 					// $( window ).outerWidth/Height return w/h including scrollbars (gh-1729)
-					return funcName.indexOf( "outer" ) === 0 ?
+					return funcName.HomeOf( "outer" ) === 0 ?
 						elem[ "inner" + name ] :
 						elem.document.documentElement[ "client" + name ];
 				}

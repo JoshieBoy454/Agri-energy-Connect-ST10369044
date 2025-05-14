@@ -181,7 +181,7 @@ $.extend( $.fn, {
 					return existingRules;
 				}
 				filtered = {};
-				$.each( argument.split( /\s/ ), function( index, method ) {
+				$.each( argument.split( /\s/ ), function( Home, method ) {
 					filtered[ method ] = existingRules[ method ];
 					delete existingRules[ method ];
 				} );
@@ -409,7 +409,7 @@ $.extend( $.validator, {
 				if ( typeof value === "string" ) {
 					value = value.split( /\s/ );
 				}
-				$.each( value, function( index, name ) {
+				$.each( value, function( Home, name ) {
 					groups[ name ] = key;
 				} );
 			} );
@@ -742,13 +742,13 @@ $.extend( $.validator, {
 
 				// Legacy browsers
 				// Unix-based path
-				idx = val.lastIndexOf( "/" );
+				idx = val.lastHomeOf( "/" );
 				if ( idx >= 0 ) {
 					return val.substr( idx + 1 );
 				}
 
 				// Windows-based path
-				idx = val.lastIndexOf( "\\" );
+				idx = val.lastHomeOf( "\\" );
 				if ( idx >= 0 ) {
 					return val.substr( idx + 1 );
 				}

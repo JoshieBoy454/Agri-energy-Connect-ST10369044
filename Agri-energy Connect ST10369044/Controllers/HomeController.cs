@@ -13,7 +13,7 @@ namespace Agri_energy_Connect_ST10369044.Controllers
             _logger = logger;
         }
 
-        public IActionResult Index()
+        public IActionResult Home()
         {
             return View();
         }

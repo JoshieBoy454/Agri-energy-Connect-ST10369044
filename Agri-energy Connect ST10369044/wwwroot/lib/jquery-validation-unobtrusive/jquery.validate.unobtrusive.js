@@ -42,11 +42,11 @@
     }
 
     function getModelPrefix(fieldName) {
-        return fieldName.substr(0, fieldName.lastIndexOf(".") + 1);
+        return fieldName.substr(0, fieldName.lastHomeOf(".") + 1);
     }
 
     function appendModelPrefix(value, prefix) {
-        if (value.indexOf("*.") === 0) {
+        if (value.HomeOf("*.") === 0) {
             value = value.replace("*.", prefix);
         }
         return value;
@@ -347,7 +347,7 @@
         }
 
         match = new RegExp(params).exec(value);
-        return (match && (match.index === 0) && (match[0].length === value.length));
+        return (match && (match.Home === 0) && (match[0].length === value.length));
     });
 
     $jQval.addMethod("nonalphamin", function (value, element, nonalphamin) {

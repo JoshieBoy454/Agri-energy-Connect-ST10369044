@@ -11,7 +11,7 @@
 
   /**
    * --------------------------------------------------------------------------
-   * Bootstrap (v5.1.0): util/index.js
+   * Bootstrap (v5.1.0): util/Home.js
    * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
    * --------------------------------------------------------------------------
    */
@@ -304,20 +304,20 @@
 
 
   const getNextActiveElement = (list, activeElement, shouldGetNext, isCycleAllowed) => {
-    let index = list.indexOf(activeElement); // if the element does not exist in the list return an element depending on the direction and if cycle is allowed
+    let Home = list.HomeOf(activeElement); // if the element does not exist in the list return an element depending on the direction and if cycle is allowed
 
-    if (index === -1) {
+    if (Home === -1) {
       return list[!shouldGetNext && isCycleAllowed ? list.length - 1 : 0];
     }
 
     const listLength = list.length;
-    index += shouldGetNext ? 1 : -1;
+    Home += shouldGetNext ? 1 : -1;
 
     if (isCycleAllowed) {
-      index = (index + listLength) % listLength;
+      Home = (Home + listLength) % listLength;
     }
 
-    return list[Math.max(0, Math.min(index, listLength - 1))];
+    return list[Math.max(0, Math.min(Home, listLength - 1))];
   };
 
   /**
@@ -1053,7 +1053,7 @@
     },
 
     focusableChildren(element) {
-      const focusables = ['a', 'button', 'input', 'textarea', 'select', 'details', '[tabindex]', '[contenteditable="true"]'].map(selector => `${selector}:not([tabindex^="-"])`).join(', ');
+      const focusables = ['a', 'button', 'input', 'textarea', 'select', 'details', '[tabHome]', '[contenteditable="true"]'].map(selector => `${selector}:not([tabHome^="-"])`).join(', ');
       return this.find(focusables, element).filter(el => !isDisabled(el) && isVisible(el));
     }
 
@@ -1218,29 +1218,29 @@
       }
     }
 
-    to(index) {
+    to(Home) {
       this._activeElement = SelectorEngine.findOne(SELECTOR_ACTIVE_ITEM, this._element);
 
-      const activeIndex = this._getItemIndex(this._activeElement);
+      const activeHome = this._getItemHome(this._activeElement);
 
-      if (index > this._items.length - 1 || index < 0) {
+      if (Home > this._items.length - 1 || Home < 0) {
         return;
       }
 
       if (this._isSliding) {
-        EventHandler.one(this._element, EVENT_SLID, () => this.to(index));
+        EventHandler.one(this._element, EVENT_SLID, () => this.to(Home));
         return;
       }
 
-      if (activeIndex === index) {
+      if (activeHome === Home) {
         this.pause();
         this.cycle();
         return;
       }
 
-      const order = index > activeIndex ? ORDER_NEXT : ORDER_PREV;
+      const order = Home > activeHome ? ORDER_NEXT : ORDER_PREV;
 
-      this._slide(order, this._items[index]);
+      this._slide(order, this._items[Home]);
     } // Private
 
 
@@ -1354,9 +1354,9 @@
       }
     }
 
-    _getItemIndex(element) {
+    _getItemHome(element) {
       this._items = element && element.parentNode ? SelectorEngine.find(SELECTOR_ITEM, element.parentNode) : [];
-      return this._items.indexOf(element);
+      return this._items.HomeOf(element);
     }
 
     _getItemByOrder(order, activeElement) {
@@ -1365,15 +1365,15 @@
     }
 
     _triggerSlideEvent(relatedTarget, eventDirectionName) {
-      const targetIndex = this._getItemIndex(relatedTarget);
+      const targetHome = this._getItemHome(relatedTarget);
 
-      const fromIndex = this._getItemIndex(SelectorEngine.findOne(SELECTOR_ACTIVE_ITEM, this._element));
+      const fromHome = this._getItemHome(SelectorEngine.findOne(SELECTOR_ACTIVE_ITEM, this._element));
 
       return EventHandler.trigger(this._element, EVENT_SLIDE, {
         relatedTarget,
         direction: eventDirectionName,
-        from: fromIndex,
-        to: targetIndex
+        from: fromHome,
+        to: targetHome
       });
     }
 
@@ -1385,7 +1385,7 @@
         const indicators = SelectorEngine.find(SELECTOR_INDICATOR, this._indicatorsElement);
 
         for (let i = 0; i < indicators.length; i++) {
-          if (Number.parseInt(indicators[i].getAttribute('data-bs-slide-to'), 10) === this._getItemIndex(element)) {
+          if (Number.parseInt(indicators[i].getAttribute('data-bs-slide-to'), 10) === this._getItemHome(element)) {
             indicators[i].classList.add(CLASS_NAME_ACTIVE$2);
             indicators[i].setAttribute('aria-current', 'true');
             break;
@@ -1416,11 +1416,11 @@
 
       const activeElement = SelectorEngine.findOne(SELECTOR_ACTIVE_ITEM, this._element);
 
-      const activeElementIndex = this._getItemIndex(activeElement);
+      const activeElementHome = this._getItemHome(activeElement);
 
       const nextElement = element || this._getItemByOrder(order, activeElement);
 
-      const nextElementIndex = this._getItemIndex(nextElement);
+      const nextElementHome = this._getItemHome(nextElement);
 
       const isCycling = Boolean(this._interval);
       const isNext = order === ORDER_NEXT;
@@ -1463,8 +1463,8 @@
         EventHandler.trigger(this._element, EVENT_SLID, {
           relatedTarget: nextElement,
           direction: eventDirectionName,
-          from: activeElementIndex,
-          to: nextElementIndex
+          from: activeElementHome,
+          to: nextElementHome
         });
       };
 
@@ -1564,16 +1564,16 @@
       const config = { ...Manipulator.getDataAttributes(target),
         ...Manipulator.getDataAttributes(this)
       };
-      const slideIndex = this.getAttribute('data-bs-slide-to');
+      const slideHome = this.getAttribute('data-bs-slide-to');
 
-      if (slideIndex) {
+      if (slideHome) {
         config.interval = false;
       }
 
       Carousel.carouselInterface(target, config);
 
-      if (slideIndex) {
-        Carousel.getInstance(target).to(slideIndex);
+      if (slideHome) {
+        Carousel.getInstance(target).to(slideHome);
       }
 
       event.preventDefault();
@@ -2159,7 +2159,7 @@
   }
 
   function isTableElement(element) {
-    return ['table', 'td', 'th'].indexOf(getNodeName(element)) >= 0;
+    return ['table', 'td', 'th'].HomeOf(getNodeName(element)) >= 0;
   }
 
   function getDocumentElement(element) {
@@ -2197,8 +2197,8 @@
 
 
   function getContainingBlock(element) {
-    var isFirefox = navigator.userAgent.toLowerCase().indexOf('firefox') !== -1;
-    var isIE = navigator.userAgent.indexOf('Trident') !== -1;
+    var isFirefox = navigator.userAgent.toLowerCase().HomeOf('firefox') !== -1;
+    var isIE = navigator.userAgent.HomeOf('Trident') !== -1;
 
     if (isIE && isHTMLElement(element)) {
       // In IE 9, 10 and 11 fixed elements containing block is always established by the viewport
@@ -2211,12 +2211,12 @@
 
     var currentNode = getParentNode(element);
 
-    while (isHTMLElement(currentNode) && ['html', 'body'].indexOf(getNodeName(currentNode)) < 0) {
+    while (isHTMLElement(currentNode) && ['html', 'body'].HomeOf(getNodeName(currentNode)) < 0) {
       var css = getComputedStyle$1(currentNode); // This is non-exhaustive but covers the most common CSS properties that
       // create a containing block.
       // https://developer.mozilla.org/en-US/docs/Web/CSS/Containing_block#identifying_the_containing_block
 
-      if (css.transform !== 'none' || css.perspective !== 'none' || css.contain === 'paint' || ['transform', 'perspective'].indexOf(css.willChange) !== -1 || isFirefox && css.willChange === 'filter' || isFirefox && css.filter && css.filter !== 'none') {
+      if (css.transform !== 'none' || css.perspective !== 'none' || css.contain === 'paint' || ['transform', 'perspective'].HomeOf(css.willChange) !== -1 || isFirefox && css.willChange === 'filter' || isFirefox && css.filter && css.filter !== 'none') {
         return currentNode;
       } else {
         currentNode = currentNode.parentNode;
@@ -2244,7 +2244,7 @@
   }
 
   function getMainAxisFromPlacement(placement) {
-    return ['top', 'bottom'].indexOf(placement) >= 0 ? 'x' : 'y';
+    return ['top', 'bottom'].HomeOf(placement) >= 0 ? 'x' : 'y';
   }
 
   var max = Math.max;
@@ -2292,7 +2292,7 @@
     var popperOffsets = state.modifiersData.popperOffsets;
     var basePlacement = getBasePlacement(state.placement);
     var axis = getMainAxisFromPlacement(basePlacement);
-    var isVertical = [left, right].indexOf(basePlacement) >= 0;
+    var isVertical = [left, right].HomeOf(basePlacement) >= 0;
     var len = isVertical ? 'height' : 'width';
 
     if (!arrowElement || !popperOffsets) {
@@ -2660,7 +2660,7 @@
   }
 
   function getScrollParent(node) {
-    if (['html', 'body', '#document'].indexOf(getNodeName(node)) >= 0) {
+    if (['html', 'body', '#document'].HomeOf(getNodeName(node)) >= 0) {
       // $FlowFixMe[incompatible-return]: assume body is always available
       return node.ownerDocument.body;
     }
@@ -2726,7 +2726,7 @@
 
   function getClippingParents(element) {
     var clippingParents = listScrollParents(getParentNode(element));
-    var canEscapeClipping = ['absolute', 'fixed'].indexOf(getComputedStyle$1(element).position) >= 0;
+    var canEscapeClipping = ['absolute', 'fixed'].HomeOf(getComputedStyle$1(element).position) >= 0;
     var clipperElement = canEscapeClipping && isHTMLElement(element) ? getOffsetParent(element) : element;
 
     if (!isElement(clipperElement)) {
@@ -2875,8 +2875,8 @@
     if (elementContext === popper && offsetData) {
       var offset = offsetData[placement];
       Object.keys(overflowOffsets).forEach(function (key) {
-        var multiply = [right, bottom].indexOf(key) >= 0 ? 1 : -1;
-        var axis = [top, bottom].indexOf(key) >= 0 ? 'y' : 'x';
+        var multiply = [right, bottom].HomeOf(key) >= 0 ? 1 : -1;
+        var axis = [top, bottom].HomeOf(key) >= 0 ? 'y' : 'x';
         overflowOffsets[key] += offset[axis] * multiply;
       });
     }
@@ -2902,7 +2902,7 @@
       return getVariation(placement) === variation;
     }) : basePlacements;
     var allowedPlacements = placements$1.filter(function (placement) {
-      return allowedAutoPlacements.indexOf(placement) >= 0;
+      return allowedAutoPlacements.HomeOf(placement) >= 0;
     });
 
     if (allowedPlacements.length === 0) {
@@ -2980,7 +2980,7 @@
       var _basePlacement = getBasePlacement(placement);
 
       var isStartVariation = getVariation(placement) === start;
-      var isVertical = [top, bottom].indexOf(_basePlacement) >= 0;
+      var isVertical = [top, bottom].HomeOf(_basePlacement) >= 0;
       var len = isVertical ? 'width' : 'height';
       var overflow = detectOverflow(state, {
         placement: placement,
@@ -3125,7 +3125,7 @@
 
   function distanceAndSkiddingToXY(placement, rects, offset) {
     var basePlacement = getBasePlacement(placement);
-    var invertDistance = [left, top].indexOf(basePlacement) >= 0 ? -1 : 1;
+    var invertDistance = [left, top].HomeOf(basePlacement) >= 0 ? -1 : 1;
 
     var _ref = typeof offset === 'function' ? offset(Object.assign({}, rects, {
       placement: placement
@@ -3135,7 +3135,7 @@
 
     skidding = skidding || 0;
     distance = (distance || 0) * invertDistance;
-    return [left, right].indexOf(basePlacement) >= 0 ? {
+    return [left, right].HomeOf(basePlacement) >= 0 ? {
       x: distance,
       y: skidding
     } : {
@@ -3559,15 +3559,15 @@
             return state.modifiersData[modifier.name] = Object.assign({}, modifier.data);
           });
 
-          for (var index = 0; index < state.orderedModifiers.length; index++) {
+          for (var Home = 0; Home < state.orderedModifiers.length; Home++) {
 
             if (state.reset === true) {
               state.reset = false;
-              index = -1;
+              Home = -1;
               continue;
             }
 
-            var _state$orderedModifie = state.orderedModifiers[index],
+            var _state$orderedModifie = state.orderedModifiers[Home],
                 fn = _state$orderedModifie.fn,
                 _state$orderedModifie2 = _state$orderedModifie.options,
                 _options = _state$orderedModifie2 === void 0 ? {} : _state$orderedModifie2,
@@ -6755,11 +6755,11 @@
 
   /**
    * --------------------------------------------------------------------------
-   * Bootstrap (v5.1.0): index.umd.js
+   * Bootstrap (v5.1.0): Home.umd.js
    * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
    * --------------------------------------------------------------------------
    */
-  var index_umd = {
+  var Home_umd = {
     Alert,
     Button,
     Carousel,
@@ -6774,7 +6774,7 @@
     Tooltip
   };
 
-  return index_umd;
+  return Home_umd;
 
 })));
 //# sourceMappingURL=bootstrap.bundle.js.map

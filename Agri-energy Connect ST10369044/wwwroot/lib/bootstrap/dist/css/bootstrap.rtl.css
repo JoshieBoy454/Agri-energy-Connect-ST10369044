@@ -2682,14 +2682,14 @@ textarea.form-control-lg {
 }
 .input-group > .form-control:focus,
 .input-group > .form-select:focus {
-  z-index: 3;
+  z-Home: 3;
 }
 .input-group .btn {
   position: relative;
-  z-index: 2;
+  z-Home: 2;
 }
 .input-group .btn:focus {
-  z-index: 3;
+  z-Home: 3;
 }
 
 .input-group-text {
@@ -2757,7 +2757,7 @@ textarea.form-control-lg {
 .valid-tooltip {
   position: absolute;
   top: 100%;
-  z-index: 5;
+  z-Home: 5;
   display: none;
   max-width: 100%;
   padding: 0.25rem 0.5rem;
@@ -2827,12 +2827,12 @@ textarea.form-control-lg {
 .was-validated .input-group .form-control:valid, .input-group .form-control.is-valid,
 .was-validated .input-group .form-select:valid,
 .input-group .form-select.is-valid {
-  z-index: 1;
+  z-Home: 1;
 }
 .was-validated .input-group .form-control:valid:focus, .input-group .form-control.is-valid:focus,
 .was-validated .input-group .form-select:valid:focus,
 .input-group .form-select.is-valid:focus {
-  z-index: 3;
+  z-Home: 3;
 }
 
 .invalid-feedback {
@@ -2846,7 +2846,7 @@ textarea.form-control-lg {
 .invalid-tooltip {
   position: absolute;
   top: 100%;
-  z-index: 5;
+  z-Home: 5;
   display: none;
   max-width: 100%;
   padding: 0.25rem 0.5rem;
@@ -2916,12 +2916,12 @@ textarea.form-control-lg {
 .was-validated .input-group .form-control:invalid, .input-group .form-control.is-invalid,
 .was-validated .input-group .form-select:invalid,
 .input-group .form-select.is-invalid {
-  z-index: 2;
+  z-Home: 2;
 }
 .was-validated .input-group .form-control:invalid:focus, .input-group .form-control.is-invalid:focus,
 .was-validated .input-group .form-select:invalid:focus,
 .input-group .form-select.is-invalid:focus {
-  z-index: 3;
+  z-Home: 3;
 }
 
 .btn {
@@ -3487,7 +3487,7 @@ textarea.form-control-lg {
 
 .dropdown-menu {
   position: absolute;
-  z-index: 1000;
+  z-Home: 1000;
   display: none;
   min-width: 10rem;
   padding: 0.5rem 0;
@@ -3790,7 +3790,7 @@ textarea.form-control-lg {
 .btn-group-vertical > .btn:focus,
 .btn-group-vertical > .btn:active,
 .btn-group-vertical > .btn.active {
-  z-index: 1;
+  z-Home: 1;
 }
 
 .btn-toolbar {
@@ -4083,7 +4083,7 @@ textarea.form-control-lg {
   .navbar-expand-sm .offcanvas {
     position: inherit;
     bottom: 0;
-    z-index: 1000;
+    z-Home: 1000;
     flex-grow: 1;
     visibility: visible !important;
     background-color: transparent;
@@ -4136,7 +4136,7 @@ textarea.form-control-lg {
   .navbar-expand-md .offcanvas {
     position: inherit;
     bottom: 0;
-    z-index: 1000;
+    z-Home: 1000;
     flex-grow: 1;
     visibility: visible !important;
     background-color: transparent;
@@ -4189,7 +4189,7 @@ textarea.form-control-lg {
   .navbar-expand-lg .offcanvas {
     position: inherit;
     bottom: 0;
-    z-index: 1000;
+    z-Home: 1000;
     flex-grow: 1;
     visibility: visible !important;
     background-color: transparent;
@@ -4242,7 +4242,7 @@ textarea.form-control-lg {
   .navbar-expand-xl .offcanvas {
     position: inherit;
     bottom: 0;
-    z-index: 1000;
+    z-Home: 1000;
     flex-grow: 1;
     visibility: visible !important;
     background-color: transparent;
@@ -4295,7 +4295,7 @@ textarea.form-control-lg {
   .navbar-expand-xxl .offcanvas {
     position: inherit;
     bottom: 0;
-    z-index: 1000;
+    z-Home: 1000;
     flex-grow: 1;
     visibility: visible !important;
     background-color: transparent;
@@ -4347,7 +4347,7 @@ textarea.form-control-lg {
 .navbar-expand .offcanvas {
   position: inherit;
   bottom: 0;
-  z-index: 1000;
+  z-Home: 1000;
   flex-grow: 1;
   visibility: visible !important;
   background-color: transparent;
@@ -4642,10 +4642,10 @@ textarea.form-control-lg {
   }
 }
 .accordion-button:hover {
-  z-index: 2;
+  z-Home: 2;
 }
 .accordion-button:focus {
-  z-index: 3;
+  z-Home: 3;
   border-color: #86b7fe;
   outline: 0;
   box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
@@ -4747,13 +4747,13 @@ textarea.form-control-lg {
   }
 }
 .page-link:hover {
-  z-index: 2;
+  z-Home: 2;
   color: #0a58ca;
   background-color: #e9ecef;
   border-color: #dee2e6;
 }
 .page-link:focus {
-  z-index: 3;
+  z-Home: 3;
   color: #0a58ca;
   background-color: #e9ecef;
   outline: 0;
@@ -4764,7 +4764,7 @@ textarea.form-control-lg {
   margin-right: -1px;
 }
 .page-item.active .page-link {
-  z-index: 3;
+  z-Home: 3;
   color: #fff;
   background-color: #0d6efd;
   border-color: #0d6efd;
@@ -4859,7 +4859,7 @@ textarea.form-control-lg {
   position: absolute;
   top: 0;
   left: 0;
-  z-index: 2;
+  z-Home: 2;
   padding: 1.25rem 1rem;
 }
 
@@ -5011,7 +5011,7 @@ textarea.form-control-lg {
   text-align: inherit;
 }
 .list-group-item-action:hover, .list-group-item-action:focus {
-  z-index: 1;
+  z-Home: 1;
   color: #495057;
   text-decoration: none;
   background-color: #f8f9fa;
@@ -5044,7 +5044,7 @@ textarea.form-control-lg {
   background-color: #fff;
 }
 .list-group-item.active {
-  z-index: 2;
+  z-Home: 2;
   color: #fff;
   background-color: #0d6efd;
   border-color: #0d6efd;
@@ -5409,7 +5409,7 @@ textarea.form-control-lg {
   position: fixed;
   top: 0;
   right: 0;
-  z-index: 1055;
+  z-Home: 1055;
   display: none;
   width: 100%;
   height: 100%;
@@ -5474,7 +5474,7 @@ textarea.form-control-lg {
   position: fixed;
   top: 0;
   right: 0;
-  z-index: 1050;
+  z-Home: 1050;
   width: 100vw;
   height: 100vh;
   background-color: #000;
@@ -5689,7 +5689,7 @@ textarea.form-control-lg {
 }
 .tooltip {
   position: absolute;
-  z-index: 1080;
+  z-Home: 1080;
   display: block;
   margin: 0;
   font-family: var(--bs-font-sans-serif);
@@ -5791,7 +5791,7 @@ textarea.form-control-lg {
   position: absolute;
   top: 0;
   left: 0 ;
-  z-index: 1070;
+  z-Home: 1070;
   display: block;
   max-width: 276px;
   font-family: var(--bs-font-sans-serif);
@@ -5974,12 +5974,12 @@ textarea.form-control-lg {
 .carousel-fade .carousel-item.active,
 .carousel-fade .carousel-item-next.carousel-item-start,
 .carousel-fade .carousel-item-prev.carousel-item-end {
-  z-index: 1;
+  z-Home: 1;
   opacity: 1;
 }
 .carousel-fade .active.carousel-item-start,
 .carousel-fade .active.carousel-item-end {
-  z-index: 0;
+  z-Home: 0;
   opacity: 0;
   transition: opacity 0s 0.6s;
 }
@@ -5995,7 +5995,7 @@ textarea.form-control-lg {
   position: absolute;
   top: 0;
   bottom: 0;
-  z-index: 1;
+  z-Home: 1;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -6053,7 +6053,7 @@ textarea.form-control-lg {
   left: 0;
   bottom: 0;
   right: 0;
-  z-index: 2;
+  z-Home: 2;
   display: flex;
   justify-content: center;
   padding: 0;
@@ -6186,7 +6186,7 @@ textarea.form-control-lg {
 .offcanvas {
   position: fixed;
   bottom: 0;
-  z-index: 1045;
+  z-Home: 1045;
   display: flex;
   flex-direction: column;
   max-width: 100%;
@@ -6206,7 +6206,7 @@ textarea.form-control-lg {
   position: fixed;
   top: 0;
   right: 0;
-  z-index: 1040;
+  z-Home: 1040;
   width: 100vw;
   height: 100vh;
   background-color: #000;
@@ -6444,7 +6444,7 @@ textarea.form-control-lg {
   top: 0;
   left: 0;
   right: 0;
-  z-index: 1030;
+  z-Home: 1030;
 }
 
 .fixed-bottom {
@@ -6452,14 +6452,14 @@ textarea.form-control-lg {
   left: 0;
   bottom: 0;
   right: 0;
-  z-index: 1030;
+  z-Home: 1030;
 }
 
 .sticky-top {
   position: -webkit-sticky;
   position: sticky;
   top: 0;
-  z-index: 1020;
+  z-Home: 1020;
 }
 
 @media (min-width: 576px) {
@@ -6467,7 +6467,7 @@ textarea.form-control-lg {
     position: -webkit-sticky;
     position: sticky;
     top: 0;
-    z-index: 1020;
+    z-Home: 1020;
   }
 }
 @media (min-width: 768px) {
@@ -6475,7 +6475,7 @@ textarea.form-control-lg {
     position: -webkit-sticky;
     position: sticky;
     top: 0;
-    z-index: 1020;
+    z-Home: 1020;
   }
 }
 @media (min-width: 992px) {
@@ -6483,7 +6483,7 @@ textarea.form-control-lg {
     position: -webkit-sticky;
     position: sticky;
     top: 0;
-    z-index: 1020;
+    z-Home: 1020;
   }
 }
 @media (min-width: 1200px) {
@@ -6491,7 +6491,7 @@ textarea.form-control-lg {
     position: -webkit-sticky;
     position: sticky;
     top: 0;
-    z-index: 1020;
+    z-Home: 1020;
   }
 }
 @media (min-width: 1400px) {
@@ -6499,7 +6499,7 @@ textarea.form-control-lg {
     position: -webkit-sticky;
     position: sticky;
     top: 0;
-    z-index: 1020;
+    z-Home: 1020;
   }
 }
 .hstack {
@@ -6535,7 +6535,7 @@ textarea.form-control-lg {
   left: 0;
   bottom: 0;
   right: 0;
-  z-index: 1;
+  z-Home: 1;
   content: "";
 }
 

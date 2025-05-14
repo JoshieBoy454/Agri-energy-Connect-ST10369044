@@ -33,7 +33,7 @@
 
   /**
    * --------------------------------------------------------------------------
-   * Bootstrap (v5.1.0): util/index.js
+   * Bootstrap (v5.1.0): util/Home.js
    * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
    * --------------------------------------------------------------------------
    */
@@ -326,20 +326,20 @@
 
 
   const getNextActiveElement = (list, activeElement, shouldGetNext, isCycleAllowed) => {
-    let index = list.indexOf(activeElement); // if the element does not exist in the list return an element depending on the direction and if cycle is allowed
+    let Home = list.HomeOf(activeElement); // if the element does not exist in the list return an element depending on the direction and if cycle is allowed
 
-    if (index === -1) {
+    if (Home === -1) {
       return list[!shouldGetNext && isCycleAllowed ? list.length - 1 : 0];
     }
 
     const listLength = list.length;
-    index += shouldGetNext ? 1 : -1;
+    Home += shouldGetNext ? 1 : -1;
 
     if (isCycleAllowed) {
-      index = (index + listLength) % listLength;
+      Home = (Home + listLength) % listLength;
     }
 
-    return list[Math.max(0, Math.min(index, listLength - 1))];
+    return list[Math.max(0, Math.min(Home, listLength - 1))];
   };
 
   /**
@@ -1075,7 +1075,7 @@
     },
 
     focusableChildren(element) {
-      const focusables = ['a', 'button', 'input', 'textarea', 'select', 'details', '[tabindex]', '[contenteditable="true"]'].map(selector => `${selector}:not([tabindex^="-"])`).join(', ');
+      const focusables = ['a', 'button', 'input', 'textarea', 'select', 'details', '[tabHome]', '[contenteditable="true"]'].map(selector => `${selector}:not([tabHome^="-"])`).join(', ');
       return this.find(focusables, element).filter(el => !isDisabled(el) && isVisible(el));
     }
 
@@ -1240,29 +1240,29 @@
       }
     }
 
-    to(index) {
+    to(Home) {
       this._activeElement = SelectorEngine.findOne(SELECTOR_ACTIVE_ITEM, this._element);
 
-      const activeIndex = this._getItemIndex(this._activeElement);
+      const activeHome = this._getItemHome(this._activeElement);
 
-      if (index > this._items.length - 1 || index < 0) {
+      if (Home > this._items.length - 1 || Home < 0) {
         return;
       }
 
       if (this._isSliding) {
-        EventHandler.one(this._element, EVENT_SLID, () => this.to(index));
+        EventHandler.one(this._element, EVENT_SLID, () => this.to(Home));
         return;
       }
 
-      if (activeIndex === index) {
+      if (activeHome === Home) {
         this.pause();
         this.cycle();
         return;
       }
 
-      const order = index > activeIndex ? ORDER_NEXT : ORDER_PREV;
+      const order = Home > activeHome ? ORDER_NEXT : ORDER_PREV;
 
-      this._slide(order, this._items[index]);
+      this._slide(order, this._items[Home]);
     } // Private
 
 
@@ -1376,9 +1376,9 @@
       }
     }
 
-    _getItemIndex(element) {
+    _getItemHome(element) {
       this._items = element && element.parentNode ? SelectorEngine.find(SELECTOR_ITEM, element.parentNode) : [];
-      return this._items.indexOf(element);
+      return this._items.HomeOf(element);
     }
 
     _getItemByOrder(order, activeElement) {
@@ -1387,15 +1387,15 @@
     }
 
     _triggerSlideEvent(relatedTarget, eventDirectionName) {
-      const targetIndex = this._getItemIndex(relatedTarget);
+      const targetHome = this._getItemHome(relatedTarget);
 
-      const fromIndex = this._getItemIndex(SelectorEngine.findOne(SELECTOR_ACTIVE_ITEM, this._element));
+      const fromHome = this._getItemHome(SelectorEngine.findOne(SELECTOR_ACTIVE_ITEM, this._element));
 
       return EventHandler.trigger(this._element, EVENT_SLIDE, {
         relatedTarget,
         direction: eventDirectionName,
-        from: fromIndex,
-        to: targetIndex
+        from: fromHome,
+        to: targetHome
       });
     }
 
@@ -1407,7 +1407,7 @@
         const indicators = SelectorEngine.find(SELECTOR_INDICATOR, this._indicatorsElement);
 
         for (let i = 0; i < indicators.length; i++) {
-          if (Number.parseInt(indicators[i].getAttribute('data-bs-slide-to'), 10) === this._getItemIndex(element)) {
+          if (Number.parseInt(indicators[i].getAttribute('data-bs-slide-to'), 10) === this._getItemHome(element)) {
             indicators[i].classList.add(CLASS_NAME_ACTIVE$2);
             indicators[i].setAttribute('aria-current', 'true');
             break;
@@ -1438,11 +1438,11 @@
 
       const activeElement = SelectorEngine.findOne(SELECTOR_ACTIVE_ITEM, this._element);
 
-      const activeElementIndex = this._getItemIndex(activeElement);
+      const activeElementHome = this._getItemHome(activeElement);
 
       const nextElement = element || this._getItemByOrder(order, activeElement);
 
-      const nextElementIndex = this._getItemIndex(nextElement);
+      const nextElementHome = this._getItemHome(nextElement);
 
       const isCycling = Boolean(this._interval);
       const isNext = order === ORDER_NEXT;
@@ -1485,8 +1485,8 @@
         EventHandler.trigger(this._element, EVENT_SLID, {
           relatedTarget: nextElement,
           direction: eventDirectionName,
-          from: activeElementIndex,
-          to: nextElementIndex
+          from: activeElementHome,
+          to: nextElementHome
         });
       };
 
@@ -1586,16 +1586,16 @@
       const config = { ...Manipulator.getDataAttributes(target),
         ...Manipulator.getDataAttributes(this)
       };
-      const slideIndex = this.getAttribute('data-bs-slide-to');
+      const slideHome = this.getAttribute('data-bs-slide-to');
 
-      if (slideIndex) {
+      if (slideHome) {
         config.interval = false;
       }
 
       Carousel.carouselInterface(target, config);
 
-      if (slideIndex) {
-        Carousel.getInstance(target).to(slideIndex);
+      if (slideHome) {
+        Carousel.getInstance(target).to(slideHome);
       }
 
       event.preventDefault();
@@ -5001,11 +5001,11 @@
 
   /**
    * --------------------------------------------------------------------------
-   * Bootstrap (v5.1.0): index.umd.js
+   * Bootstrap (v5.1.0): Home.umd.js
    * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
    * --------------------------------------------------------------------------
    */
-  var index_umd = {
+  var Home_umd = {
     Alert,
     Button,
     Carousel,
@@ -5020,7 +5020,7 @@
     Tooltip
   };
 
-  return index_umd;
+  return Home_umd;
 
 })));
 //# sourceMappingURL=bootstrap.js.map
