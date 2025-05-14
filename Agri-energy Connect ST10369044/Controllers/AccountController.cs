@@ -68,7 +68,7 @@ namespace Agri_energy_Connect_ST10369044.Controllers
             //Signs the user in and directs them to the home page
             //-------------------------------------------------------------->
             await SignInUser(user);
-            return RedirectToAction("Home", "Home");
+            return RedirectToAction("Login", "Account");
         }
         //=========================================================================>
 
@@ -114,7 +114,7 @@ namespace Agri_energy_Connect_ST10369044.Controllers
             //--------------------------------------------------->
             //redirect to employee add farmer page
             //-------------------------------------------------->
-            return RedirectToAction("AddFarmer", "Home");
+            return RedirectToAction();
         }
         //=========================================================================>
 
@@ -165,7 +165,7 @@ namespace Agri_energy_Connect_ST10369044.Controllers
             //-------------------------------------------------->
             await SignInUser(user);
             //ADD HOME PAGE
-            return Redirect(returnUrl ?? Url.Action("EmployeesHome", "Home")!);
+            return Redirect(returnUrl ?? Url.Action()!);
         }
         //=========================================================================>
 
@@ -179,7 +179,7 @@ namespace Agri_energy_Connect_ST10369044.Controllers
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            return RedirectToAction("Login","Home");
+            return RedirectToAction("Login","Account");
         }
         //=========================================================================>
 
