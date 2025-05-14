@@ -1,116 +1,117 @@
-﻿<!DOCTYPE html>
+﻿<!DOCTYPE html>  @* CHANGED: Fixed missing exclamation mark *@
 <html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Agri_energy_Connect_ST10369044</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/Agri_energy_Connect_ST10369044.styles.css" asp-append-version="true" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>@ViewData["Title"] - Agri-Energy Connect</title>
+  <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 </head>
 <body>
-    @* NAVBAR *@
     @{
-        //--------------------------------------------------->
-        // Decides the color based on Authentication
-        //-------------------------------------------------->
-        var navColor = !User.Identity.IsAuthenticated
-        ? "#545656"
-        : User.IsInRole("Employee")
-        ? "#EC8316"
-        : User.IsInRole("Farmer")
-        ? "#00723A"
-        : "#EC8316";
+        var isAuth = User.Identity?.IsAuthenticated ?? false;
+        var navColor = !isAuth
+          ? "#545656"
+          : User.IsInRole("Employee")
+            ? "#EC8316"
+            : User.IsInRole("Farmer")
+              ? "#00723A"
+              : "#545656";
+        var linkColor = !isAuth ? "text-dark" : "text-white";
     }
-    <nav class="navbar navbar-expand-sm navbar-light"
-         style="background-color:@navColor">
-        <div class="container-fluid">
-            <a class="navbar-brand text-white"
-               asp-controller="Home" asp-action="Privacy">
-                Agri-Energy Connect
-            </a>
-            <button class="navbar-toggler" type="button"
-                    data-bs-toggle="collapse" data-bs-target="#mainNav"
-                    aria-controls="mainNav" aria-expanded="false"
-                    aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="mainNav">
-                <ul class="navbar-nav me-auto mb-2 mb-sm-0">
-                    @if (!User.Identity.IsAuthenticated)
+
+  <nav class="navbar navbar-expand-sm navbar-light" style="background-color:@navColor">
+    <div class="container-fluid">
+      <a class="navbar-brand @linkColor"
+         asp-controller="Home" asp-action="Index">
+        Agri-Energy Connect
+      </a>
+      <button class="navbar-toggler" type="button"
+              data-bs-toggle="collapse" data-bs-target="#mainNav"
+              aria-controls="mainNav" aria-expanded="false"
+              aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="mainNav">
+        <ul class="navbar-nav me-auto mb-2 mb-sm-0">
+
+                    @if (!isAuth)
                     {
-                        <li class="nav-item">
-                            <a class="nav-link text-dark"
-                               asp-controller="Home" asp-action="Register">
-                                Register
-                            </a>
-                        </li>
+                <li class="nav-item">
+                  <a class="nav-link @linkColor" 
+                     asp-controller="Account" asp-action="Register">
+                    Register
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link @linkColor" 
+                     asp-controller="Account" asp-action="Login">
+                    Login
+                  </a>
+                </li>
                     }
-                    //--------------------------------------------------->
-					// If the user is an employee displays this
-                    //-------------------------------------------------->
                     else if (User.IsInRole("Employee"))
                     {
-                        <li class="nav-item">
-                            <a class="nav-link text-white"
-                               asp-controller="Home" asp-action="AddFarmers">
-                                Add Farmer
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-white"
-                               asp-controller="Home" asp-action="ViewFarmerProducts">
-                                View Farmer Products
-                            </a>
-                        </li>
+                <li class="nav-item">
+                  <a class="nav-link @linkColor" 
+                     asp-controller="Account" asp-action="AddFarmer">
+                    Add Farmer
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link @linkColor" 
+                     asp-controller="Products" asp-action="ViewFarmerProducts">
+                    View Farmer Products
+                  </a>
+                </li>
                     }
-                    //--------------------------------------------------->
-                    // If the user is a farmer displays this
-                    //-------------------------------------------------->
                     else if (User.IsInRole("Farmer"))
                     {
-                        <li class="nav-item">
-                            <a class="nav-link text-white"
-                               asp-controller="Home" asp-action="ViewProducts">
-                                My Products
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-white"
-                               asp-controller="Home" asp-action="AddProducts">
-                                Add Product
-                            </a>
-                        </li>
+                <li class="nav-item">
+                  <a class="nav-link @linkColor" 
+                     asp-controller="Products" asp-action="ViewProducts">
+                    My Products
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link @linkColor" 
+                     asp-controller="Products" asp-action="AddProducts">
+                    Add Product
+                  </a>
+                </li>
                     }
-                </ul>
-                @if (User.Identity.IsAuthenticated)
+        </ul>
+                @if (isAuth)
                 {
-                    <ul class="navbar-nav ms-auto">
-                        <li class="nav-item">
-                            <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
-                                <button type="submit" class="btn btn-link nav-link text-white">
-                                    Logout
-                                </button>
-                            </form>
-                        </li>
-                    </ul>
+              <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                  <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
+                    <button type="submit" class="btn btn-link nav-link @linkColor">  @* CHANGED *@
+                      Logout
+                    </button>
+                  </form>
+                </li>
+              </ul>
                 }
-            </div>
-        </div>
-    </nav>
-
-    <div class="container my-4">
-        @RenderBody()
+      </div>
     </div>
+  </nav>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2025 - Agri-energy Connect  <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy | </a>
-        </div>
-    </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+  <div class="container my-4">
+        @RenderBody()
+  </div>
+
+  <footer class="border-top footer text-muted">
+    <div class="container">
+      &copy; 2025 – Agri-Energy Connect |
+      <a asp-controller="Home" asp-action="Privacy">Privacy</a>
+    </div>
+  </footer>
+
+  <script src="~/lib/jquery/dist/jquery.min.js"></script>
+  <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
