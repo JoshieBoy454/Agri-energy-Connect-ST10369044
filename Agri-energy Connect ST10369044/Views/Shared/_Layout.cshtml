@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
   <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 </head>
-<body>
+<body style ="background-color: #DFDFDF">
     @{
         var isAuth = User.Identity?.IsAuthenticated ?? false;
         var navColor = !isAuth
@@ -23,7 +23,7 @@
   <nav class="navbar navbar-expand-sm navbar-light" style="background-color:@navColor">
     <div class="container-fluid">
       <a class="navbar-brand @linkColor"
-         asp-controller="Home" asp-action="Index">
+         asp-controller="Home" asp-action="Home">
         Agri-Energy Connect
       </a>
       <button class="navbar-toggler" type="button"
@@ -40,13 +40,13 @@
                     {
                 <li class="nav-item">
                   <a class="nav-link @linkColor" 
-                     asp-controller="Account" asp-action="Register">
+                     asp-controller="Home" asp-action="Register">
                     Register
                   </a>
                 </li>
                 <li class="nav-item">
                   <a class="nav-link @linkColor" 
-                     asp-controller="Account" asp-action="Login">
+                     asp-controller="Home" asp-action="Login">
                     Login
                   </a>
                 </li>
@@ -55,13 +55,13 @@
                     {
                 <li class="nav-item">
                   <a class="nav-link @linkColor" 
-                     asp-controller="Account" asp-action="AddFarmer">
+                     asp-controller="Home" asp-action="AddFarmer">
                     Add Farmer
                   </a>
                 </li>
                 <li class="nav-item">
                   <a class="nav-link @linkColor" 
-                     asp-controller="Products" asp-action="ViewFarmerProducts">
+                     asp-controller="Home" asp-action="ViewFarmerProducts">
                     View Farmer Products
                   </a>
                 </li>
@@ -70,13 +70,13 @@
                     {
                 <li class="nav-item">
                   <a class="nav-link @linkColor" 
-                     asp-controller="Products" asp-action="ViewProducts">
+                     asp-controller="Home" asp-action="ViewProducts">
                     My Products
                   </a>
                 </li>
                 <li class="nav-item">
                   <a class="nav-link @linkColor" 
-                     asp-controller="Products" asp-action="AddProducts">
+                     asp-controller="Home" asp-action="AddProducts">
                     Add Product
                   </a>
                 </li>

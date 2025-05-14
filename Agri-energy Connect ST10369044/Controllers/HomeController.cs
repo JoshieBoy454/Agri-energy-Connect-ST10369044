@@ -18,6 +18,15 @@ namespace Agri_energy_Connect_ST10369044.Controllers
             return View();
         }
 
+        public IActionResult Home()
+        {
+            if (User.IsInRole("Employee"))
+                return View("EmployeesHome");
+            if (User.IsInRole("Farmer"))
+                return View("FarmersHome");
+            return RedirectToAction("Login", "Home");
+        }
+
         public IActionResult Privacy()
         {
             return View();
