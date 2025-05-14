@@ -9,36 +9,98 @@
     <link rel="stylesheet" href="~/Agri_energy_Connect_ST10369044.styles.css" asp-append-version="true" />
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Home">
-                    <img src="~\Images\Picture1.png"
-                         alt="Agri-Energy Connect"
-                         style="height: 40px; width: auto;"
-						 asp-append-version="true" />
-                </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
+    @* NAVBAR *@
+    @{
+        //--------------------------------------------------->
+        // Decides the color based on Authentication
+        //-------------------------------------------------->
+        var navColor = !User.Identity.IsAuthenticated
+        ? "#545656"
+        : User.IsInRole("Employee")
+        ? "#EC8316"
+        : User.IsInRole("Farmer")
+        ? "#00723A"
+        : "#EC8316";
+    }
+    <nav class="navbar navbar-expand-sm navbar-light"
+         style="background-color:@navColor">
+        <div class="container-fluid">
+            <a class="navbar-brand text-white"
+               asp-controller="Home" asp-action="Privacy">
+                Agri-Energy Connect
+            </a>
+            <button class="navbar-toggler" type="button"
+                    data-bs-toggle="collapse" data-bs-target="#mainNav"
+                    aria-controls="mainNav" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="mainNav">
+                <ul class="navbar-nav me-auto mb-2 mb-sm-0">
+                    @if (!User.Identity.IsAuthenticated)
+                    {
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Home">Home</a>
+                            <a class="nav-link text-dark"
+                               asp-controller="Home" asp-action="Register">
+                                Register
+                            </a>
+                        </li>
+                    }
+                    //--------------------------------------------------->
+					// If the user is an employee displays this
+                    //-------------------------------------------------->
+                    else if (User.IsInRole("Employee"))
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link text-white"
+                               asp-controller="Home" asp-action="AddFarmers">
+                                Add Farmer
+                            </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Login">Login</a>
+                            <a class="nav-link text-white"
+                               asp-controller="Home" asp-action="ViewFarmerProducts">
+                                View Farmer Products
+                            </a>
+                        </li>
+                    }
+                    //--------------------------------------------------->
+                    // If the user is a farmer displays this
+                    //-------------------------------------------------->
+                    else if (User.IsInRole("Farmer"))
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link text-white"
+                               asp-controller="Home" asp-action="ViewProducts">
+                                My Products
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white"
+                               asp-controller="Home" asp-action="AddProducts">
+                                Add Product
+                            </a>
+                        </li>
+                    }
+                </ul>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
+                                <button type="submit" class="btn btn-link nav-link text-white">
+                                    Logout
+                                </button>
+                            </form>
                         </li>
                     </ul>
-                </div>
+                }
             </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
+        </div>
+    </nav>
+
+    <div class="container my-4">
+        @RenderBody()
     </div>
 
     <footer class="border-top footer text-muted">

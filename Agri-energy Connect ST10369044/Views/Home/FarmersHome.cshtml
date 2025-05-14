@@ -1,0 +1,23 @@
+﻿@{
+    ViewData["Title"] = "Farmer Dashboard";
+}
+
+<div class="d-flex flex-column vh-100">
+    <div class="flex-fill bg-light d-flex justify-content-center align-items-center">
+        <div class="card p-4 shadow" style="min-width: 300px; max-width: 400px;">
+            <div class="d-grid gap-3">
+                <a asp-controller="Home" asp-action="AddProducts"
+                   class="btn text-white"
+                   style="background-color: #00723A;">
+                    Add Farmer
+                </a>
+                <a asp-controller="Home" asp-action="ViewProducts"
+                   class="btn text-white"
+                   style="background-color: #00723A;">
+                    View Farmer Products
+                </a>
+            </div>
+        </div>
+    </div>
+
+</div>

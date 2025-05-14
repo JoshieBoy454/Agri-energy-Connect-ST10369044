@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Agri_energy_Connect_ST10369044.Controllers
 {
@@ -12,13 +13,17 @@ namespace Agri_energy_Connect_ST10369044.Controllers
     //Made with the help of chatGPT
     //Made with the help of tutorialsEU
     //---------------------------------------------------------------->
+    [Authorize]
     public class AccountController : Controller
     {
         private readonly AppDbContext _db;
         public AccountController(AppDbContext db) => _db = db;
 
-        [HttpGet] public IActionResult Register() => View();
+        [Authorize(Roles = "Employee")]
+        [HttpGet] 
+        public IActionResult Register() => View();
 
+        [Authorize(Roles = "Employee")]
         [HttpPost]
         public async Task<IActionResult> Register(RegisterViewModel rvm)
         {
@@ -52,7 +57,8 @@ namespace Agri_energy_Connect_ST10369044.Controllers
                 Password = $"{salt}:{hashed}",
                 Name = rvm.Name,
                 Surname = rvm.Surname,
-                Email = rvm.Email
+                Email = rvm.Email,
+                Role = "Employee"
             };
             _db.Users.Add(user);
             await _db.SaveChangesAsync();
@@ -61,7 +67,51 @@ namespace Agri_energy_Connect_ST10369044.Controllers
             //Signs the user in and directs them to the home page
             //-------------------------------------------------------------->
             await SignInUser(user);
+            //RETURN TO EMPLYEE HOME PAGE
             return RedirectToAction("Index", "Home");
+        }
+
+        //--------------------------------------------------->
+        // Add Farmer
+        //-------------------------------------------------->
+        [Authorize(Roles = "Employee")]
+        [HttpGet]
+        public IActionResult AddFarmer() => View();
+
+        [Authorize(Roles = "Employee")]
+        [HttpPost]
+        public async Task<IActionResult> AddFarmer(AddFarmerViewModel vm)
+        {
+            if (!ModelState.IsValid) return View(vm);
+
+            if (_db.Users.Any(u => u.Email == vm.Email))
+            {
+                ModelState.AddModelError("", "Email already taken.");
+                return View(vm);
+            }
+
+            var salt = Guid.NewGuid().ToString();
+            var hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
+                password: vm.Password,
+                salt: System.Text.Encoding.UTF8.GetBytes(salt),
+                prf: KeyDerivationPrf.HMACSHA256,
+                iterationCount: 10000,
+                numBytesRequested: 32));
+
+            var farmer = new Users
+            {
+                Email = vm.Email,
+                Password = $"{salt}:{hashed}",
+                Name = vm.Name,
+                Surname = vm.Surname,
+                Role = "Farmer"
+            };
+            _db.Users.Add(farmer);
+            await _db.SaveChangesAsync();
+            //--------------------------------------------------->
+            //redirect to employee add farmer page
+            //-------------------------------------------------->
+            return RedirectToAction("AddFarmer", "Home");
         }
 
         [HttpGet]
@@ -106,7 +156,8 @@ namespace Agri_energy_Connect_ST10369044.Controllers
             //Signs in
             //-------------------------------------------------->
             await SignInUser(user);
-            return Redirect(returnUrl ?? Url.Action("Index", "Home")!);
+            //ADD HOME PAGE
+            return Redirect(returnUrl ?? Url.Action("EmployeesHome", "Home")!);
         }
 
         //--------------------------------------------------->
