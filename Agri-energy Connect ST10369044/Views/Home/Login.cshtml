@@ -1,0 +1,46 @@
+﻿@{
+    ViewData["Title"] = "Login Page";
+}
+@model Agri_energy_Connect_ST10369044.Models.Users
+
+<div class="d-flex flex-column vh-100">
+    <nav class="navbar" style="height: 60px; background-color: #46CD34;">
+        <div class="container-fluid">
+        </div>
+    </nav>
+
+    <div class="flex-fill d-flex align-items-center justify-content-center bg-light">
+        <div class="card p-4 shadow" style="min-width: 320px; max-width: 400px;">
+            <form asp-action="Login" method="post" novalidate>
+                <div class="mb-3">
+                    <input asp-for="Email"
+                           class="form-control"
+                           placeholder="Email"
+                           style="border-left: 4px solid #46CD34;" />
+                    <span asp-validation-for="Email" class="text-danger small"></span>
+                </div>
+
+                <div class="mb-3">
+                    <input asp-for="Password"
+                           type="password"
+                           class="form-control"
+                           placeholder="Password"
+                           style="border-left: 4px solid #46CD34;" />
+                    <span asp-validation-for="Password" class="text-danger small"></span>
+                </div>
+
+                <button type="submit"
+                        class="btn w-100"
+                        style="background-color: #CC9228; color: #fff;">
+                    Log In
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+@* @section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+} *@

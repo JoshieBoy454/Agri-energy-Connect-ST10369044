@@ -2,7 +2,7 @@
 {
     public class Products
     {
-        public int ProductID { get; set; }
+        public long ProductID { get; set; }
         public required string pName { get; set; }
         public required string pDescription { get; set; }
         public required string pCategory { get; set; }
@@ -10,5 +10,9 @@
         public  int pPictureData { get; set; }
         public  string? pPictureFileName { get; set; }
         public  string? pPictureMimeType { get; set; }
+        //--------------------------------------------------->
+        // Foreign Key for Users table
+        //-------------------------------------------------->
+        public long UserID { get; set; }
     }
 }
