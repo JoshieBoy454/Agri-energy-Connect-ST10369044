@@ -1,11 +1,37 @@
 ﻿@model AddProductsViewModel
-<h2>Add Farmer</h2>
-@* <form asp-action="AddFarmer" method="post">
-	<div asp-validation-summary="All"></div>
-	<input asp-for="pName" class="form-control" placeholder="Email" />
-	<input asp-for="Name" class="form-control" placeholder="First Name" />
-	<input asp-for="Surname" class="form-control" placeholder="Last Name" />
-	<input asp-for="Password" class="form-control" placeholder="Password" />
-	<input asp-for="Confirm" class="form-control" placeholder="Confirm Password" />
-	<button type="submit" class="btn btn-success mt-2">Create Farmer</button>
-</form> *@
+@{
+    ViewData["Title"] = "Add Product";
+}
+
+<h2>Add Product</h2>
+<form asp-action="AddProducts" method="post" enctype="multipart/form-data">
+    @Html.AntiForgeryToken()
+    <div asp-validation-summary="All" class="text-danger mb-3"></div>
+
+    <div class="mb-3">
+        <label asp-for="pName" class="form-label">Name</label>
+        <input asp-for="pName" class="form-control" />
+        <span asp-validation-for="pName" class="text-danger small"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="pCategory" class="form-label">Category</label>
+        @Html.DropDownListFor(
+			m => m.pCategory,
+					(IEnumerable<SelectListItem>)ViewBag.Categories,"Pick One",new{@class = "form-select"})
+        <span asp-validation-for="pCategory" class="text-danger small"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="pProductionDate" class="form-label">Production Date</label>
+        <input asp-for="pProductionDate" type="date" class="form-control" />
+        <span asp-validation-for="pProductionDate" class="text-danger small"></span>
+    </div>
+
+    <div class="mb-4">
+        <label asp-for="pPicture" class="form-label">Picture</label>
+        <input asp-for="pPicture" type="file" class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-success">Save Product</button>
+</form>

@@ -3,10 +3,10 @@
     public class Products
     {
         public long ProductID { get; set; }
-        public required string pName { get; set; }
-        public required string pCategory { get; set; }
-        public required string pProductionDate { get; set; }
-        public  int pPictureData { get; set; }
+        public  string pName { get; set; }
+        public  string pCategory { get; set; }
+        public  DateTime pProductionDate { get; set; }
+        public  byte[]? pPictureData { get; set; }
         public  string? pPictureFileName { get; set; }
         public  string? pPictureMimeType { get; set; }
         //--------------------------------------------------->

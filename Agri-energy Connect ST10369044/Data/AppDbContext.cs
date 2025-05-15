@@ -42,7 +42,7 @@ namespace Agri_energy_Connect_ST10369044.Data
             //-------------------------------------------------->
             builder.Entity<Products>(b =>
             {
-                b.ToTable("Products");
+                b.ToTable("Product");
                 b.HasKey(p => p.ProductID);
                 b.Property(p => p.ProductID).HasColumnName("ProductID");
                 b.Property(p => p.pName).HasColumnName("pName");
@@ -52,7 +52,9 @@ namespace Agri_energy_Connect_ST10369044.Data
                 b.Property(p => p.pPictureData).HasColumnName("pPictureData");
                 b.Property(p => p.pPictureFileName).HasColumnName("pPictureFileName");
                 b.Property(p => p.pPictureMimeType).HasColumnName("pPictureMimeType");
-
+                b.HasOne<Users>()
+                    .WithMany()
+                    .HasForeignKey(p => p.UserID);
             });
         }
     }
