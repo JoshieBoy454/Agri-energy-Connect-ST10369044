@@ -63,6 +63,10 @@ Passowrd: farmer123
 
 2. Run web application locally by pressing the green play button
 
+## GitHub Link
+
+https://github.com/JoshieBoy454/Agri-energy-Connect-ST10369044.git
+
 ## Acknowledgments 
 
 *	ardalis (2024a). Handle requests with controllers in ASP.NET Core MVC. [online] Microsoft.com. Available at: https://learn.microsoft.com/en-us/aspnet/core/mvc/controllers/actions?view=aspnetcore-9.0 [Accessed 15 May 2025].
