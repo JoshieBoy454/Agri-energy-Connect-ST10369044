@@ -98,3 +98,31 @@ body {
 .bg-secondary.rounded-pill h2 {
     font-weight: 700;
 }
+.pic-picker {
+    display: inline-block;
+    cursor: pointer;
+    position: relative;
+}
+
+#picPreview {
+    width: 100px;
+    height: 100px;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
+
+    #picPreview::before {
+        content: "+";
+        font-size: 2.5rem;
+        color: rgba(255,255,255,0.8);
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        pointer-events: none;
+    }
+
+    #picPreview.has-image::before {
+        display: none;
+    }
