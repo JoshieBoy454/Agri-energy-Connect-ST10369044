@@ -13,5 +13,9 @@
         // Foreign Key for Users table
         //-------------------------------------------------->
         public long UserID { get; set; }
+        //--------------------------------------------------->
+        // Navigation property
+        //-------------------------------------------------->
+        public Users? User { get; set; }
     }
 }

@@ -3,6 +3,8 @@ using Agri_energy_Connect_ST10369044.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 
 namespace Agri_energy_Connect_ST10369044.Controllers
 {
@@ -66,10 +68,52 @@ namespace Agri_energy_Connect_ST10369044.Controllers
         }
 
         [HttpGet]
-        public IActionResult ViewFarmersProducts()
+        public IActionResult ViewFarmerProducts(FilterViewModel fvm)
         {
-            // TODO Implement logic to view farmers
-            return View();
+            //--------------------------------------------------->
+            //Makes the list of famrmers
+            //-------------------------------------------------->
+            fvm.Farmers = _db.Users
+                .Where(u => u.Role == "Farmer")
+                .Select(u => new SelectListItem
+                {
+                    Value = u.UserID.ToString(),
+                    Text = $"{u.Name} {u.Surname}"
+                })
+                .ToList();
+
+            //--------------------------------------------------->
+            //Makes the list of categories from teh list of products
+            //-------------------------------------------------->
+            fvm.Categories = _db.Products
+                .Select(p => p.pCategory)
+                .Distinct()
+                .Select(c => new SelectListItem
+                {
+                    Value = c,
+                    Text = c
+                })
+                .ToList();
+
+            //--------------------------------------------------->
+            // Query for the products based on the filters (Category, Date, Farmer)
+            //.HasValue over != null to avoid null reference exception
+            //-------------------------------------------------->
+            var query = _db.Products
+                .Include(p => p.User)
+                .AsQueryable();
+
+            if (fvm.StartDate.HasValue)
+                query = query.Where(p => p.pProductionDate >= fvm.StartDate.Value);
+            if (fvm.EndDate.HasValue)
+                query = query.Where(p => p.pProductionDate <= fvm.EndDate.Value);
+            if (fvm.FarmerIds?.Any() == true)
+                query = query.Where(p => fvm.FarmerIds.Contains(p.UserID));
+            if (!string.IsNullOrEmpty(fvm.Category))
+                query = query.Where(p => p.pCategory == fvm.Category);
+
+            fvm.Products = query.ToList();
+            return View(fvm);
         }
     }
 }

@@ -1,5 +1,63 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model Agri_energy_Connect_ST10369044.Models.FilterViewModel
 @{
+    ViewData["Title"] = "View Farmer Products";
+}
+
+<h2 class="mb-4">View Farmer Products</h2>
+
+<form method="get" class="row g-3 mb-4">
+    <div class="col-sm-6 col-md-3">
+        <label asp-for="StartDate" class="form-label"></label>
+        <input asp-for="StartDate" type="date" class="form-control" />
+    </div>
+    <div class="col-sm-6 col-md-3">
+        <label asp-for="EndDate" class="form-label"></label>
+        <input asp-for="EndDate" type="date" class="form-control" />
+    </div>
+    <div class="col-sm-6 col-md-3">
+        <label asp-for="FarmerIds" class="form-label"></label>
+        <select asp-for="FarmerIds"
+                asp-items="Model.Farmers"
+                class="form-select"
+                multiple size="5">
+        </select>
+    </div>
+    <div class="col-sm-6 col-md-3">
+        <label asp-for="Category" class="form-label"></label>
+        <select asp-for="Category" asp-items="Model.Categories" class="form-select">
+            <option value="">All</option>
+        </select>
+    </div>
+    <div class="col-12">
+        <button type="submit" class="btn btn-primary">Filter</button>
+    </div>
+</form>
+
+@if (!Model.Products.Any())
+{
+    <div class="alert alert-info">No products found for the selected criteria.</div>
+}
+else
+{
+    <div class="row g-4">
+        @foreach (var p in Model.Products)
+        {
+            <div class="col-sm-6 col-md-4">
+                <div class="card h-100">
+                    @if (p.pPictureData != null && p.pPictureData.Length > 0)
+                    {
+                        <img class="card-img-top"
+                             src="data:@p.pPictureMimeType;base64,@Convert.ToBase64String(p.pPictureData)"
+                             alt="@p.pName" />
+                    }
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">@p.pName</h5>
+                        <p class="card-text mb-1"><strong>Farmer:</strong> @p.User?.Name @p.User?.Surname</p>
+                        <p class="card-text mb-1"><strong>Category:</strong> @p.pCategory</p>
+                        <p class="card-text mt-1"><strong>Date:</strong>@p.pProductionDate</p>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
 }
