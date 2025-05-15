@@ -23,8 +23,10 @@ namespace Agri_energy_Connect_ST10369044.Controllers
         [HttpGet]
         public IActionResult ViewProducts()
         {
-            // TODO Implement logic to add product
-            return View();
+            var userId = long.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+
+            var products = _db.Products.Where(p => p.UserID == userId).ToList();
+            return View(products);
         }
 
         [Authorize(Roles = "Farmer")]
@@ -34,6 +36,7 @@ namespace Agri_energy_Connect_ST10369044.Controllers
             ViewBag.Categories = new List<SelectListItem> {
                 new("Fruit","Fruit"),
                 new("Vegetable","Vegetable"),
+                new("Flower","Flower"),
                 new("Seed","Seed"),
                 new("Equipment","Equipment"),
                 new("Other","Other")
