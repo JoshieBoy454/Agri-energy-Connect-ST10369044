@@ -10,12 +10,11 @@
 
             <div class="card-body p-4">
 
-                <!-- Image-picker circle, centered -->
                 <div class="d-flex justify-content-center mb-4 position-relative">
                     <input asp-for="pPicture"
-                           type="file" accept="image/*"
-                           id="picInput"
-                           class="visually-hidden" />
+                        type="file" accept="image/*"
+                        id="picInput"
+                        class="visually-hidden" />
 
                     <label for="picInput" class="pic-picker">
                         <div id="picPreview" class="rounded-circle bg-secondary"></div>
@@ -34,7 +33,6 @@
                     @Html.AntiForgeryToken()
                     <div asp-validation-summary="All" class="text-danger mb-3"></div>
 
-                    <!-- Name -->
                     <div class="mb-3">
                         <div style="
                   background-color:#00723A;
@@ -43,18 +41,17 @@
                   border-radius:4px;
                   font-weight:600;">
                             <label asp-for="pName"
-                                   class="form-label mb-0"
-                                   style="color:#fff;">
+                                class="form-label mb-0"
+                                style="color:#fff;">
                                 Name
                             </label>
                         </div>
                         <input asp-for="pName"
-                               class="form-control mt-2"
-                               style="background:#DFDFDF; color:#000; border:none;" />
+                            class="form-control mt-2"
+                            style="background:#DFDFDF; color:#000; border:none;" />
                         <span asp-validation-for="pName" class="text-danger small"></span>
                     </div>
 
-                    <!-- Category -->
                     <div class="mb-3">
                         <div style="
                   background-color:#00723A;
@@ -63,24 +60,23 @@
                   border-radius:4px;
                   font-weight:600;">
                             <label asp-for="pCategory"
-                                   class="form-label mb-0"
-                                   style="color:#fff;">
+                                class="form-label mb-0"
+                                style="color:#fff;">
                                 Category
                             </label>
                         </div>
                         @Html.DropDownListFor(
-                                 m => m.pCategory,
-                                 (IEnumerable<SelectListItem>)ViewBag.Categories,
-                                 "Pick One",
-                                 new
-                                 {
-                                     @class = "form-select mt-2",
-                                     style = "background:#DFDFDF; color:#000; border:none;"
-                                 })
+                            m => m.pCategory,
+                            (IEnumerable<SelectListItem>)ViewBag.Categories,
+                            "Pick One",
+                            new
+                            {
+                                @class = "form-select mt-2",
+                                style = "background:#DFDFDF; color:#000; border:none;"
+                            })
                         <span asp-validation-for="pCategory" class="text-danger small"></span>
                     </div>
 
-                    <!-- Production Date -->
                     <div class="mb-4">
                         <div style="
                   background-color:#00723A;
@@ -89,27 +85,26 @@
                   border-radius:4px;
                   font-weight:600;">
                             <label asp-for="pProductionDate"
-                                   class="form-label mb-0"
-                                   style="color:#fff;">
+                                class="form-label mb-0"
+                                style="color:#fff;">
                                 Production Date
                             </label>
                         </div>
                         <input asp-for="pProductionDate"
-                               type="date"
-                               class="form-control mt-2"
-                               style="background:#DFDFDF; color:#000; border:none;" />
+                            type="date"
+                            class="form-control mt-2"
+                            style="background:#DFDFDF; color:#000; border:none;" />
                         <span asp-validation-for="pProductionDate" class="text-danger small"></span>
                     </div>
 
-                    <!-- Save Product Button -->
                     <div class="d-flex">
                         <button type="submit"
-                                class="btn btn-raise flex-fill"
-                                style="
-                      background-color:#00723A;
-                      color:#FFFFFF;
-                      flex:1;
-                      font-weight:600;">
+                            class="btn btn-raise flex-fill"
+                            style="
+                            background-color:#00723A;
+                            color:#FFFFFF;
+                            flex:1;
+                            font-weight:600;">
                             Save Product
                         </button>
                     </div>
