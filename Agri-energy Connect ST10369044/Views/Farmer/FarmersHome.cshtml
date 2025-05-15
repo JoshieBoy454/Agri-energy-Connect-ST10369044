@@ -1,23 +1,76 @@
-﻿@{
+﻿@model Agri_energy_Connect_ST10369044.Models.FarmerDashboardViewModel
+@{
     ViewData["Title"] = "Farmer Dashboard";
 }
 
-<div class="d-flex flex-column vh-100">
-    <div class="flex-fill bg-light d-flex justify-content-center align-items-center">
-        <div class="card p-4 shadow" style="min-width: 300px; max-width: 400px;">
-            <div class="d-grid gap-3">
-                <a asp-controller="Farmer" asp-action="AddProducts"
-                   class="btn text-white"
-                   style="background-color: #00723A;">
-                    Add Products
-                </a>
-                <a asp-controller="Farmer" asp-action="ViewProducts"
-                   class="btn text-white"
-                   style="background-color: #00723A;">
-                    View Products
-                </a>
+<div class="container py-5">
+    <div class="card bg-white shadow-sm slide-down">
+        <div class="card-body p-4">
+
+    <div class="bg-success text-white rounded-top p-4 mb-4">
+        <h1 class="h3 mb-1">Farmer Dashboard</h1>
+        <small>Logged in as: @User.Identity.Name</small>
+    </div>
+
+    <div class="row g-3 mb-4">
+        <div class="col-sm-4">
+            <div class="card border-success h-100">
+                <div class="card-body text-success">
+                    <h5 class="card-title">Total Products</h5>
+                    <p class="display-5">@Model.TotalCategories</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="card border-success h-100">
+                <div class="card-body text-success">
+                    <h5 class="card-title">Categories</h5>
+                    <p class="display-5">@Model.TotalCategories</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="card border-success h-100">
+                <div class="card-body text-success">
+                    <h5 class="card-title">Last Added</h5>
+                    <p class="lead mb-0">@Model.LatestProductName</p>
+                    <small class="text-muted">
+                        @Model.LatestProductDate.ToString("MMM dd, yyyy")
+                    </small>
+                </div>
             </div>
         </div>
     </div>
 
+    <div class="card mb-4">
+        <div class="card-header bg-light">
+            Recent Products
+        </div>
+        <ul class="list-group list-group-flush">
+            @foreach (var p in Model.RecentProducts)
+            {
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    @p.Name
+                    <span class="badge bg-secondary">@p.DateAdded.ToString("MMM dd")</span>
+                </li>
+            }
+            @if (!Model.RecentProducts.Any())
+            {
+                <li class="list-group-item text-muted">No products yet.</li>
+            }
+        </ul>
+    </div>
+
+    <div class="d-flex gap-3 justify-content-center">
+        <a asp-controller="Farmer" asp-action="AddProducts"
+                   class="btn btn-raise nav-button-backgroun-green nav-text-white nav-thick-button">
+            Add New Product
+        </a>
+        <a asp-controller="Farmer" asp-action="ViewProducts"
+                   class="btn btn-raise nav-button-backgroun-green nav-text-white nav-thick-button">
+            View All Products
+        </a>
+    </div>
+    </div>
+    </div>
 </div>

@@ -33,5 +33,20 @@ namespace Agri_energy_Connect_ST10369044.Models
 
         public List<string> CategoryLabels { get; set; } = new();
         public List<int> CategoryData { get; set; } = new();
+
+        }
+
+    public class RecentProduct
+    {
+        public string Name { get; set; } = "";
+        public DateTime DateAdded { get; set; }
+    }
+    public class FarmerDashboardViewModel
+    {
+        public int TotalProducts { get; set; }
+        public int TotalCategories { get; set; }
+        public string LatestProductName { get; set; } = "";
+        public DateTime LatestProductDate { get; set; }
+        public List<RecentProduct> RecentProducts { get; set; } = new();
     }
 }
