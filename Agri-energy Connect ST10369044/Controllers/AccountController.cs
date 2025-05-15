@@ -20,7 +20,10 @@ namespace Agri_energy_Connect_ST10369044.Controllers
 
         [AllowAnonymous]
         [HttpGet] 
-        public IActionResult Register() => View();
+        public IActionResult Register()
+        {
+            return View();
+        }
 
         [AllowAnonymous]
         [HttpPost]
@@ -71,60 +74,15 @@ namespace Agri_energy_Connect_ST10369044.Controllers
             return RedirectToAction("Login", "Account");
         }
         //=========================================================================>
-
-        //--------------------------------------------------->
-        // Add Farmer
-        //-------------------------------------------------->
-        [Authorize(Roles = "Employee")]
-        [HttpGet]
-        public IActionResult AddFarmer() => View();
-
-        [Authorize(Roles = "Employee")]
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        //=========================================================================>
-        public async Task<IActionResult> AddFarmer(AddFarmerViewModel afvm)
-        {
-            if (!ModelState.IsValid) return View(afvm);
-
-            if (_db.Users.Any(u => u.Email == afvm.Email))
-            {
-                ModelState.AddModelError("", "Email already taken.");
-                return View(afvm);
-            }
-
-            var salt = Guid.NewGuid().ToString();
-            var hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
-                password: afvm.Password,
-                salt: System.Text.Encoding.UTF8.GetBytes(salt),
-                prf: KeyDerivationPrf.HMACSHA256,
-                iterationCount: 10000,
-                numBytesRequested: 32));
-
-            var farmer = new Users
-            {
-                Email = afvm.Email,
-                Password = $"{salt}:{hashed}",
-                Name = afvm.Name,
-                Surname = afvm.Surname,
-                Role = "Farmer"
-            };
-            _db.Users.Add(farmer);
-            await _db.SaveChangesAsync();
-            //--------------------------------------------------->
-            //redirect to employee add farmer page
-            //-------------------------------------------------->
-            return RedirectToAction();
-        }
-        //=========================================================================>
-
         [AllowAnonymous]
         [HttpGet]
+        //=========================================================================>
         public IActionResult Login(string? returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
             return View();
         }
+        //=========================================================================>
         //----------------------------------------------------------------->
         // Posts the Login
         //---------------------------------------------------------------->

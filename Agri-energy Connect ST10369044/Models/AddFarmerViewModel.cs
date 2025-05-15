@@ -15,8 +15,5 @@ namespace Agri_energy_Connect_ST10369044.Models
 
         [Required, DataType(DataType.Password), MinLength(6)]
         public string Password { get; set; }
-
-        [Required, DataType(DataType.Password), Compare("Password")]
-        public string Confirm { get; set; }
     }
 }
