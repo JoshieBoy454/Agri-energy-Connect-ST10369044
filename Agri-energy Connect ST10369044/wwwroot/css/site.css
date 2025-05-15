@@ -55,3 +55,29 @@ body {
         transform: scale(1.05);
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     }
+
+.nav-button-backgroun-green {
+    background-color: #00723A;
+}
+.nav-button-backgroun-orange {
+    background-color: #EC8316;
+}
+.nav-button-backgroun-grey {
+    background-color: #545656;
+}
+.nav-text-white {
+    color: #FFFFFF;
+}
+.nav-text-green {
+    color: #00723A;
+}
+.nav-text-orange {
+    color: #FF8C00;
+}
+
+.nav-thick-button {
+    font-weight: 600;
+}
+.nav-xtra-thick-text {
+    font-weight: 800;
+}
