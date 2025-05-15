@@ -14,7 +14,7 @@ namespace Agri_energy_Connect_ST10369044.Controllers
         }
 
         [HttpGet]
-        public IActionResult AddFarmer()
+        public IActionResult AddFarmers()
         {
             // TODO Implement logic to add farmer
             return View();
@@ -28,7 +28,7 @@ namespace Agri_energy_Connect_ST10369044.Controllers
         }
 
         [HttpGet]
-        public IActionResult ViewFarmers()
+        public IActionResult ViewFarmersProducts()
         {
             // TODO Implement logic to view farmers
             return View();

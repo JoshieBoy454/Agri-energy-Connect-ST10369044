@@ -2,5 +2,10 @@
 {
     public class AddProductsViewModel
     {
+        public string pName { get; set; }
+        public string pCategory { get; set; }
+        public string pProductionDate { get; set; }
+
+        // TODO Added a property for the picture data
     }
 }

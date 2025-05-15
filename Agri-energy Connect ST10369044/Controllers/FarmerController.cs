@@ -7,7 +7,7 @@ namespace Agri_energy_Connect_ST10369044.Controllers
     [Authorize(Roles ="Farmer")]
     public class FarmerController : Controller
     {
-        public IActionResult FarmerHome()
+        public IActionResult FarmersHome()
         {
             // TODO Implement logic for farmer home page
             return View();

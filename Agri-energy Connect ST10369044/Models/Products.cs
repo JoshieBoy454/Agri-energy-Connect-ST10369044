@@ -4,7 +4,6 @@
     {
         public long ProductID { get; set; }
         public required string pName { get; set; }
-        public required string pDescription { get; set; }
         public required string pCategory { get; set; }
         public required string pProductionDate { get; set; }
         public  int pPictureData { get; set; }
