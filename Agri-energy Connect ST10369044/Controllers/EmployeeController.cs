@@ -14,9 +14,23 @@ namespace Agri_energy_Connect_ST10369044.Controllers
         private readonly AppDbContext _db;
         public EmployeeController(AppDbContext db) => _db = db;
 
+        [HttpGet]
         public IActionResult EmployeesHome()
         {
-            return View();
+            var edvm = new EmployeeDashboardViewModel
+            {
+            //--------------------------------------------------->
+            //Gets the count of these particular fields
+            //-------------------------------------------------->
+                TotalFarmers = _db.Users.Count(u => u.Role == "Farmer"),
+                TotalProducts = _db.Products.Count(),
+                TotalUsers = _db.Users.Count(),
+                TotalCategories = _db.Products
+                    .Select(p => p.pCategory)
+                    .Distinct()
+                    .Count()
+            };
+            return View(edvm);
         }
 
         [Authorize(Roles = "Employee")]

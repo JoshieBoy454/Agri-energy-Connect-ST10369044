@@ -42,19 +42,19 @@ body {
     transition: transform .2s ease, box-shadow .2s ease;
 }
 
-    .hero .btn:hover {
-        transform: scale(1.05);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    }
+.hero .btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
 
 .btn-raise {
     transition: transform .2s ease, box-shadow .2s ease;
 }
 
-    .btn-raise:hover {
-        transform: scale(1.05);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    }
+.btn-raise:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
 
 .nav-button-backgroun-green {
     background-color: #00723A;
@@ -80,4 +80,21 @@ body {
 }
 .nav-xtra-thick-text {
     font-weight: 800;
+}
+.slide-down {
+    opacity: 0;
+    animation: slideDownFade 0.75s ease-out forwards;
+}
+
+.stat-card {
+    transition: transform .2s ease, box-shadow .2s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+}
+
+.bg-secondary.rounded-pill h2 {
+    font-weight: 700;
 }

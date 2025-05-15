@@ -23,4 +23,12 @@ namespace Agri_energy_Connect_ST10369044.Models
         public IEnumerable<SelectListItem> Categories { get; set; } = Enumerable.Empty<SelectListItem>();
         public IEnumerable<Products> Products { get; set; } = Enumerable.Empty<Products>();
     }
+
+    public class EmployeeDashboardViewModel
+    {
+        public int TotalProducts { get; set; }
+        public int TotalFarmers { get; set; }
+        public int TotalCategories { get; set; }
+        public int TotalUsers { get; set; }
+    }
 }
