@@ -6,7 +6,7 @@
 
 <div class="d-flex flex-column vh-100" style="background-color:#DFDFDF;">
     <div class="flex-fill d-flex align-items-center justify-content-center">
-        <div class="card shadow" style="min-width:400px; max-width:500px;">
+        <div class="card shadow slide-down" style="min-width:400px; max-width:500px;">
 
             <div class="card-body p-4">
 
@@ -107,6 +107,11 @@
                             font-weight:600;">
                             Save Product
                         </button>
+                        <a asp-action="FarmersHome" asp-controller="Farmer"
+                           class="btn btn-raise flex-fill ms-2"
+                           style="background-color:#EC8316; color:#FFFFFF; font-weight:600;">
+                            Cancel
+                        </a>
                     </div>
                 </form>
             </div>
