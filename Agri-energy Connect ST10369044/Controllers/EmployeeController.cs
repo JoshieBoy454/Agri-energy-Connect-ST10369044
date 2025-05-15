@@ -30,6 +30,18 @@ namespace Agri_energy_Connect_ST10369044.Controllers
                     .Distinct()
                     .Count()
             };
+            var categoryGroups = _db.Products
+                .GroupBy(p => p.pCategory)
+                .Select(g => new
+                {
+                    Category = g.Key,
+                    Count = g.Count()
+                })
+                .ToList();
+
+            edvm.CategoryLabels = categoryGroups.Select(g => g.Category).ToList();
+            edvm.CategoryData = categoryGroups.Select(g => g.Count).ToList();
+
             return View(edvm);
         }
 

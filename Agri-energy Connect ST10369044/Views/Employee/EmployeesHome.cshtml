@@ -7,13 +7,11 @@
     <div class="card bg-white shadow-sm slide-down">
         <div class="card-body p-4">
 
-            <!-- Header Pill -->
             <div class="bg-secondary text-white rounded-pill px-4 py-3 mb-5">
                 <h2 class="m-0">Employee Dashboard</h2>
             </div>
 
             <div class="row g-4">
-                <!-- Stats Column -->
                 <div class="col-md-4">
                     <div class="row row-cols-1 g-4">
                         <div class="col">
@@ -40,17 +38,37 @@
                     </div>
                 </div>
 
-                <!-- Content Column -->
                 <div class="col-md-8">
-                    <div class="card bg-light h-100">
-                        <div class="card-body d-flex align-items-center justify-content-center text-muted">
-                            <em>Analytics / Quick overview</em>
-                        </div>
+                    <div class="card bg-light h-100 p-4">
+                        <h5 class="card-title text-center mb-4">Products by Category</h5>
+                        <canvas id="categoryPie" style="max-height:300px;"></canvas>
                     </div>
                 </div>
             </div>
 
-            <!-- Action Buttons -->
+            <script>
+                const labels = @Html.Raw(Json.Serialize(Model.CategoryLabels));
+                const data   = @Html.Raw(Json.Serialize(Model.CategoryData));
+
+                const ctx = document.getElementById('categoryPie').getContext('2d');
+                new Chart(ctx, {
+                  type: 'pie',
+                  data: {
+                    labels: labels,
+                    datasets: [{
+                      data: data,
+                      backgroundColor: [
+                        '#00723A', '#EC8316', '#545656',
+                        '#46CD34', '#CC9228', '#A0A0A0'
+                      ]
+                    }]
+                  },
+                  options: {
+                    plugins: { legend: { position: 'bottom' } }
+                  }
+                });
+            </script>
+
             <div class="d-flex justify-content-center gap-3 mt-5">
                 <a asp-controller="Employee" asp-action="AddFarmers"
                    class="btn btn-lg btn-raise nav-button-backgroun-orange nav-text-white">

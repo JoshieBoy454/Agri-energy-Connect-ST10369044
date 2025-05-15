@@ -30,5 +30,8 @@ namespace Agri_energy_Connect_ST10369044.Models
         public int TotalFarmers { get; set; }
         public int TotalCategories { get; set; }
         public int TotalUsers { get; set; }
+
+        public List<string> CategoryLabels { get; set; } = new();
+        public List<int> CategoryData { get; set; } = new();
     }
 }
